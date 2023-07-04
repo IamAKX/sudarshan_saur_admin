@@ -34,7 +34,7 @@ class _StockistDetailState extends State<StockistDetail> {
           Header(
               title: 'Stockist Detail',
               navigateMenu: widget.navigateMenu,
-              navigateToIndex: 41),
+              navigateToIndex: 4),
           verticalGap(
             defaultPadding * 2,
           ),
