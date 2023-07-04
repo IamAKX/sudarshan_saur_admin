@@ -5,6 +5,8 @@ import 'package:saur_admin/screen/dashboard/dashboard_screen.dart';
 import 'package:saur_admin/screen/dealer/dealer_detail.dart';
 import 'package:saur_admin/screen/dealer/dealer_screen.dart';
 import 'package:saur_admin/screen/home_container/side_menu.dart';
+import 'package:saur_admin/screen/report/report_screen.dart';
+import 'package:saur_admin/screen/serial_number/serial_number_screen.dart';
 import 'package:saur_admin/screen/stockist/stockist_detail.dart';
 import 'package:saur_admin/screen/stockist/stockist_screen.dart';
 
@@ -20,7 +22,7 @@ class HomeContainer extends StatefulWidget {
 }
 
 class _HomeContainerState extends State<HomeContainer> {
-  int selectedIndex = 4;
+  int selectedIndex = 1;
 
   navigateMenu(int index) {
     setState(() {
@@ -44,6 +46,10 @@ class _HomeContainerState extends State<HomeContainer> {
         return StockistScreen(navigateMenu: navigateMenu);
       case 41:
         return StockistDetail(navigateMenu: navigateMenu);
+      case 5:
+        return SerialNumberScreen(navigateMenu: navigateMenu);
+      case 6:
+        return ReportScreen(navigateMenu: navigateMenu);
       default:
         return DashboardScreen(navigateMenu: navigateMenu);
     }

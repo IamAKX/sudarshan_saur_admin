@@ -4,21 +4,21 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_data_table/web_data_table.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:saur_admin/utils/dummy/dummy_users.dart';
+import 'package:saur_admin/utils/dummy/dummy_serial_number.dart';
 import 'package:saur_admin/utils/theme.dart';
 import 'package:saur_admin/widgets/input_field_light.dart';
 
 import '../../widgets/gaps.dart';
 import '../../widgets/header.dart';
 
-class DealerScreen extends StatefulWidget {
-  const DealerScreen({super.key, required this.navigateMenu});
+class SerialNumberScreen extends StatefulWidget {
+  const SerialNumberScreen({super.key, required this.navigateMenu});
   final Function(int index) navigateMenu;
   @override
-  State<DealerScreen> createState() => _DealerScreenState();
+  State<SerialNumberScreen> createState() => _SerialNumberScreenState();
 }
 
-class _DealerScreenState extends State<DealerScreen> {
+class _SerialNumberScreenState extends State<SerialNumberScreen> {
   final TextEditingController search = TextEditingController();
   late String _sortColumnName;
   late bool _sortAscending;
@@ -32,8 +32,8 @@ class _DealerScreenState extends State<DealerScreen> {
   @override
   void initState() {
     super.initState();
-    _sortColumnName = 'name';
-    _sortAscending = true;
+    _sortColumnName = 'id';
+    _sortAscending = false;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!_willSearch) {
         if (_latestTick != null && timer.tick > _latestTick!) {
@@ -66,7 +66,7 @@ class _DealerScreenState extends State<DealerScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Header(title: 'Dealer'),
+          const Header(title: 'Serial Number'),
           verticalGap(
             defaultPadding * 2,
           ),
@@ -74,7 +74,7 @@ class _DealerScreenState extends State<DealerScreen> {
             data: ThemeData(cardColor: Colors.white),
             child: WebDataTable(
               columnSpacing: 25,
-              header: const Text('All Dealers'),
+              header: const Text('All Assigned Serial Numbers'),
               source: WebDataTableSource(
                 sortColumnName: _sortColumnName,
                 sortAscending: _sortAscending,
@@ -86,64 +86,43 @@ class _DealerScreenState extends State<DealerScreen> {
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
-                    name: 'name',
-                    label: const Text('Name'),
+                    name: 'serialNumber',
+                    label: const Text('Serial Number'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
-                    name: 'email',
-                    label: const Text('Email'),
+                    name: 'dealerName',
+                    label: const Text('Dealer Name'),
                     dataCell: (value) => DataCell(Text('$value')),
                     sortable: true,
                   ),
                   WebDataColumn(
-                    name: 'phone',
-                    label: const Text('Phone'),
+                    name: 'dealerId',
+                    label: const Text('Dealer Id'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
-                    name: 'onboardingDate',
-                    label: const Text('Onboarded'),
+                    name: 'dealerBusiness',
+                    label: const Text('Business Name'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
-                    name: 'isActive',
-                    label: const Text('Active'),
-                    dataCell: (value) => value
-                        ? const DataCell(Text('Yes'))
-                        : const DataCell(Text('No')),
+                    name: 'assignedOn',
+                    label: const Text('Assigned On'),
+                    dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
-                      sortable: false,
-                      name: 'view',
-                      label: const Text('View'),
-                      dataCell: (value) {
-                        return DataCell(
-                          IconButton(
-                              onPressed: () {
-                                widget.navigateMenu(31);
-                              },
-                              icon: const Icon(LineAwesomeIcons.eye)),
-                        );
-                      }),
+                    name: 'stockistName',
+                    label: const Text('Stockist Name'),
+                    dataCell: (value) => DataCell(Text('$value')),
+                  ),
                   WebDataColumn(
-                    name: 'status',
-                    label: const Text('Toggle Status'),
-                    sortable: false,
-                    dataCell: (value) {
-                      return DataCell(Switch(
-                        value: dummyUserList.elementAt(value - 1)['isActive'],
-                        onChanged: (state) {
-                          setState(() {
-                            dummyUserList.elementAt(value - 1)['isActive'] =
-                                state;
-                          });
-                        },
-                      ));
-                    },
+                    name: 'stockistId',
+                    label: const Text('Stockist Id'),
+                    dataCell: (value) => DataCell(Text('$value')),
                   ),
                 ],
-                rows: dummyUserList,
+                rows: dummySerialNumberList,
                 selectedRowKeys: _selectedRowKeys,
                 onTapRow: (rows, index) {
                   log('onTapRow(): index = $index, row = ${rows[index]}');
