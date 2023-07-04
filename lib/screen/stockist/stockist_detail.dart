@@ -2,24 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:saur_admin/screen/customer/customer_detail_body.dart';
 import 'package:saur_admin/screen/customer/customer_detail_header.dart';
 import 'package:saur_admin/screen/dealer/dealer_detail_body.dart';
+import 'package:saur_admin/screen/stockist/stockist_detail_body.dart';
 import 'package:saur_admin/utils/responsive.dart';
 
 import '../../utils/theme.dart';
 import '../../widgets/gaps.dart';
 import '../../widgets/header.dart';
 
-class DealerDetail extends StatefulWidget {
-  const DealerDetail({
+class StockistDetail extends StatefulWidget {
+  const StockistDetail({
     super.key,
     required this.navigateMenu,
   });
   final Function(int index) navigateMenu;
 
   @override
-  State<DealerDetail> createState() => _DealerDetailState();
+  State<StockistDetail> createState() => _StockistDetailState();
 }
 
-class _DealerDetailState extends State<DealerDetail> {
+class _StockistDetailState extends State<StockistDetail> {
   bool isBlocked = false;
   bool isActive = false;
 
@@ -31,9 +32,9 @@ class _DealerDetailState extends State<DealerDetail> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Header(
-              title: 'Dealer Detail',
+              title: 'Stockist Detail',
               navigateMenu: widget.navigateMenu,
-              navigateToIndex: 3),
+              navigateToIndex: 41),
           verticalGap(
             defaultPadding * 2,
           ),
@@ -59,17 +60,18 @@ class _DealerDetailState extends State<DealerDetail> {
             mobile: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                getDealerDetailCard(context),
-                getDealerBusinessCard(context),
+                getStockistDetailCard(context),
+                getDealerUnderStockist(context),
               ],
             ),
             desktop: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: getDealerDetailCard(context),
+                  child: getStockistDetailCard(context),
                 ),
                 Expanded(
-                  child: getDealerBusinessCard(context),
+                  child: getDealerUnderStockist(context),
                 )
               ],
             ),
