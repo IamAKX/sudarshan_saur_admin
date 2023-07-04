@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       title: 'Sudarshan Saur | Admin Portal',
       theme: globalTheme(context),
       debugShowCheckedModeBanner: false,
-      home: const LoginScreen(),
+      home: const HomeContainer(),
       navigatorKey: navigatorKey,
       onGenerateRoute: NavRoute.generatedRoute,
     );

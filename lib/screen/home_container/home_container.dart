@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:saur_admin/screen/customer/customer_detail.dart';
 import 'package:saur_admin/screen/customer/customer_screen.dart';
 import 'package:saur_admin/screen/dashboard/dashboard_screen.dart';
+import 'package:saur_admin/screen/dealer/dealer_detail.dart';
+import 'package:saur_admin/screen/dealer/dealer_screen.dart';
 import 'package:saur_admin/screen/home_container/side_menu.dart';
 
 import '../../utils/responsive.dart';
@@ -16,7 +18,7 @@ class HomeContainer extends StatefulWidget {
 }
 
 class _HomeContainerState extends State<HomeContainer> {
-  int selectedIndex = 1;
+  int selectedIndex = 3;
 
   navigateMenu(int index) {
     setState(() {
@@ -32,6 +34,10 @@ class _HomeContainerState extends State<HomeContainer> {
         return CustomerScreen(navigateMenu: navigateMenu);
       case 21:
         return CustomerDetail(navigateMenu: navigateMenu);
+      case 3:
+        return DealerScreen(navigateMenu: navigateMenu);
+      case 31:
+        return DealerDetail(navigateMenu: navigateMenu);
       default:
         return DashboardScreen(navigateMenu: navigateMenu);
     }

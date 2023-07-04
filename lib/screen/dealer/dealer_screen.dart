@@ -11,14 +11,14 @@ import 'package:saur_admin/widgets/input_field_light.dart';
 import '../../widgets/gaps.dart';
 import '../../widgets/header.dart';
 
-class CustomerScreen extends StatefulWidget {
-  const CustomerScreen({super.key, required this.navigateMenu});
+class DealerScreen extends StatefulWidget {
+  const DealerScreen({super.key, required this.navigateMenu});
   final Function(int index) navigateMenu;
   @override
-  State<CustomerScreen> createState() => _CustomerScreenState();
+  State<DealerScreen> createState() => _DealerScreenState();
 }
 
-class _CustomerScreenState extends State<CustomerScreen> {
+class _DealerScreenState extends State<DealerScreen> {
   final TextEditingController search = TextEditingController();
   late String _sortColumnName;
   late bool _sortAscending;
@@ -33,7 +33,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
   void initState() {
     super.initState();
     _sortColumnName = 'name';
-    _sortAscending = false;
+    _sortAscending = true;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!_willSearch) {
         if (_latestTick != null && timer.tick > _latestTick!) {
@@ -66,7 +66,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Header(title: 'Customer'),
+          const Header(title: 'Dealer'),
           verticalGap(
             defaultPadding * 2,
           ),
@@ -74,7 +74,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
             data: ThemeData(cardColor: Colors.white),
             child: WebDataTable(
               columnSpacing: 25,
-              header: const Text('All Customers'),
+              header: const Text('All Dealers'),
               source: WebDataTableSource(
                 sortColumnName: _sortColumnName,
                 sortAscending: _sortAscending,
@@ -121,7 +121,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         return DataCell(
                           IconButton(
                               onPressed: () {
-                                widget.navigateMenu(21);
+                                widget.navigateMenu(31);
                               },
                               icon: const Icon(LineAwesomeIcons.eye)),
                         );
