@@ -4,8 +4,10 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:saur_admin/model/customer_model.dart';
+import 'package:saur_admin/model/dealer_model.dart';
 import 'package:saur_admin/model/list/list_customer_model.dart';
 import 'package:saur_admin/model/list/list_dealer_for_table.dart';
+import 'package:saur_admin/model/list/list_dealer_model.dart';
 import 'package:saur_admin/services/toast_service.dart';
 
 import '../utils/api.dart';
@@ -90,6 +92,42 @@ class ApiProvider extends ChangeNotifier {
     return userModel;
   }
 
+  Future<DealerModel?> getDealerById(int id) async {
+    status = ApiStatus.loading;
+    notifyListeners();
+    DealerModel? userModel;
+    log('${Api.dealers}/$id');
+    try {
+      Response response = await _dio.get(
+        '${Api.dealers}/$id',
+        options: Options(
+          contentType: 'application/json',
+          responseType: ResponseType.json,
+        ),
+      );
+      if (response.statusCode == 200) {
+        userModel = DealerModel.fromMap(response.data['data']);
+        status = ApiStatus.success;
+        notifyListeners();
+        return userModel;
+      }
+    } on DioException catch (e) {
+      status = ApiStatus.failed;
+      var resBody = e.response?.data ?? {};
+      log(e.response?.data.toString() ?? e.response.toString());
+      notifyListeners();
+      ToastService.instance.showError('Error : ${resBody['message']}');
+    } catch (e) {
+      status = ApiStatus.failed;
+      notifyListeners();
+      ToastService.instance.showError(e.toString());
+      log(e.toString());
+    }
+    status = ApiStatus.failed;
+    notifyListeners();
+    return userModel;
+  }
+
   Future<ListCustomerModel?> getAllCustomer() async {
     status = ApiStatus.loading;
     notifyListeners();
@@ -125,10 +163,10 @@ class ApiProvider extends ChangeNotifier {
     return list;
   }
 
-  Future<ListDealerForTable?> getAllDealers() async {
+  Future<ListDealerModel?> getAllDealers() async {
     status = ApiStatus.loading;
     notifyListeners();
-    ListDealerForTable? list;
+    ListDealerModel? list;
     try {
       Response response = await _dio.get(
         Api.dealers,
@@ -138,7 +176,7 @@ class ApiProvider extends ChangeNotifier {
         ),
       );
       if (response.statusCode == 200) {
-        list = ListDealerForTable.fromMap(response.data);
+        list = ListDealerModel.fromMap(response.data);
         status = ApiStatus.success;
         notifyListeners();
         return list;

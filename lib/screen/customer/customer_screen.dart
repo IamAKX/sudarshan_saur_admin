@@ -69,7 +69,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
   reloadScreen() async {
     await _api.getAllCustomer().then((value) {
       setState(() {
-        debugPrint(value.toString());
         list.clear();
         value?.data?.forEach((e) {
           var map = {
@@ -165,7 +164,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
                       name: 'view',
                       label: const Text('View'),
                       dataCell: (value) {
-                        log('view value = $value');
                         return DataCell(
                           IconButton(
                               onPressed: () {
@@ -195,11 +193,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                     value['id'])
                                 .then(
                               (value) {
-                                //          setState(() {
-                                //   list.firstWhere((element) =>
-                                //       element['customerId'] ==
-                                //       value['id'])['isActive']['status'] = state;
-                                // });
                                 reloadScreen();
                               },
                             );

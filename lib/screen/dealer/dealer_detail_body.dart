@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:saur_admin/model/dealer_model.dart';
 import 'package:saur_admin/utils/colors.dart';
+import 'package:saur_admin/utils/enum.dart';
+import 'package:saur_admin/utils/helper_methods.dart';
 import 'package:saur_admin/widgets/gaps.dart';
 
 import '../../utils/theme.dart';
+import '../../widgets/date_time_formatter.dart';
 
-Card getDealerBusinessCard(BuildContext context) {
+Card getDealerBusinessCard(BuildContext context, DealerModel? dealerModel) {
   return Card(
     color: Colors.white,
     child: Container(
@@ -26,7 +30,7 @@ Card getDealerBusinessCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '12',
+            '${dealerModel?.dealerId}',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -39,7 +43,7 @@ Card getDealerBusinessCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            'Sujata Pvt. Ltd.',
+            '${dealerModel?.businessName}',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -52,7 +56,7 @@ Card getDealerBusinessCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            'Flat No 303, Shiva Sai Apts, Nallakunta, Hyderabad, Andhra Pradesh, 500044',
+            '${dealerModel?.businessAddress}',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -65,7 +69,7 @@ Card getDealerBusinessCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '07AAGFF2194N1Z1',
+            '${dealerModel?.gstNumber}',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -78,7 +82,7 @@ Card getDealerBusinessCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            'Yes',
+            dealerModel?.status == UserStatus.ACTIVE.name ? 'Yes' : 'No',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -91,7 +95,7 @@ Card getDealerBusinessCard(BuildContext context) {
   );
 }
 
-Card getDealerDetailCard(BuildContext context) {
+Card getDealerDetailCard(BuildContext context, DealerModel? dealerModel) {
   return Card(
     color: Colors.white,
     child: Container(
@@ -102,7 +106,7 @@ Card getDealerDetailCard(BuildContext context) {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Dealer detail',
+            '${dealerModel?.dealerName}',
             style: Theme.of(context)
                 .textTheme
                 .titleLarge
@@ -114,7 +118,7 @@ Card getDealerDetailCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '27-08-2022',
+            DateTimeFormatter.onlyDateShort(dealerModel?.createdOn ?? ''),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -127,7 +131,7 @@ Card getDealerDetailCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '03-07-2023 11:53 PM',
+            DateTimeFormatter.onlyDateShort(dealerModel?.lastLogin ?? ''),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -136,11 +140,11 @@ Card getDealerDetailCard(BuildContext context) {
           ),
           verticalGap(defaultPadding),
           Text(
-            'Last Purchased on',
+            'Phone',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '13-05-2023 11:53 PM',
+            '${dealerModel?.mobileNo}',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -149,11 +153,11 @@ Card getDealerDetailCard(BuildContext context) {
           ),
           verticalGap(defaultPadding),
           Text(
-            'Total Serial alloted',
+            'Email',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '375',
+            '${dealerModel?.email}',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -162,11 +166,11 @@ Card getDealerDetailCard(BuildContext context) {
           ),
           verticalGap(defaultPadding),
           Text(
-            'Total Warranty generated',
+            'Personal Address',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '37',
+            prepareAddress(dealerModel?.address),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,

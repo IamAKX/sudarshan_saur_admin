@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:saur_admin/model/dealer_model.dart';
 import 'package:saur_admin/screen/customer/customer_detail_body.dart';
 import 'package:saur_admin/screen/customer/customer_detail_header.dart';
 import 'package:saur_admin/screen/dealer/dealer_detail_body.dart';
 import 'package:saur_admin/utils/responsive.dart';
 
+import '../../services/api_service.dart';
+import '../../utils/api.dart';
+import '../../utils/enum.dart';
 import '../../utils/theme.dart';
 import '../../widgets/gaps.dart';
 import '../../widgets/header.dart';
+import '../home_container/home_container.dart';
 
 class DealerDetail extends StatefulWidget {
   const DealerDetail({
@@ -22,9 +28,31 @@ class DealerDetail extends StatefulWidget {
 class _DealerDetailState extends State<DealerDetail> {
   bool isBlocked = false;
   bool isActive = false;
+  late ApiProvider _api;
+  DealerModel? dealerModel;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => reloadScreen(),
+    );
+  }
+
+  reloadScreen() async {
+    _api.getDealerById(int.parse(HomeContainer.args)).then((value) {
+      setState(() {
+        dealerModel = value;
+        debugPrint(dealerModel.toString());
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    _api = Provider.of<ApiProvider>(context);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(defaultPadding),
       child: Column(
@@ -38,20 +66,42 @@ class _DealerDetailState extends State<DealerDetail> {
             defaultPadding * 2,
           ),
           CustomerDetailHeader(
-            name: 'John Doe',
-            email: 'john.doe@email.com',
-            phone: '+91 9841523677',
-            isActive: isActive,
-            isBlocked: isBlocked,
+            name: '${dealerModel?.dealerName}',
+            email: '${dealerModel?.email}',
+            phone: '${dealerModel?.mobileNo}',
+            isActive: dealerModel?.status == UserStatus.ACTIVE.name,
+            isBlocked: dealerModel?.status == UserStatus.BLOCKED.name,
             toggleIsActive: (val) {
-              setState(() {
-                isActive = val;
-              });
+              _api
+                  .updateUser(
+                      Api.dealers,
+                      {
+                        'status': val
+                            ? UserStatus.ACTIVE.name
+                            : UserStatus.SUSPENDED.name
+                      },
+                      int.parse(HomeContainer.args))
+                  .then(
+                (value) {
+                  reloadScreen();
+                },
+              );
             },
             toggleIsBlocked: (val) {
-              setState(() {
-                isBlocked = val;
-              });
+              _api
+                  .updateUser(
+                      Api.dealers,
+                      {
+                        'status': val
+                            ? UserStatus.BLOCKED.name
+                            : UserStatus.ACTIVE.name
+                      },
+                      int.parse(HomeContainer.args))
+                  .then(
+                (value) {
+                  reloadScreen();
+                },
+              );
             },
           ),
           verticalGap(defaultPadding),
@@ -59,17 +109,17 @@ class _DealerDetailState extends State<DealerDetail> {
             mobile: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                getDealerDetailCard(context),
-                getDealerBusinessCard(context),
+                getDealerDetailCard(context, dealerModel),
+                getDealerBusinessCard(context, dealerModel),
               ],
             ),
             desktop: Row(
               children: [
                 Expanded(
-                  child: getDealerDetailCard(context),
+                  child: getDealerDetailCard(context, dealerModel),
                 ),
                 Expanded(
-                  child: getDealerBusinessCard(context),
+                  child: getDealerBusinessCard(context, dealerModel),
                 )
               ],
             ),

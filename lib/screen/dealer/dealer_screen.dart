@@ -4,12 +4,19 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_data_table/web_data_table.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:saur_admin/utils/dummy/dummy_users.dart';
 import 'package:saur_admin/utils/theme.dart';
 import 'package:saur_admin/widgets/input_field_light.dart';
 
+import '../../services/api_service.dart';
+import '../../utils/api.dart';
+import '../../utils/colors.dart';
+import '../../utils/enum.dart';
+import '../../widgets/date_time_formatter.dart';
 import '../../widgets/gaps.dart';
 import '../../widgets/header.dart';
+import '../home_container/home_container.dart';
 
 class DealerScreen extends StatefulWidget {
   const DealerScreen({super.key, required this.navigateMenu});
@@ -28,6 +35,9 @@ class _DealerScreenState extends State<DealerScreen> {
   int? _latestTick;
   final List<String> _selectedRowKeys = [];
   int _rowsPerPage = 10;
+
+  late ApiProvider _api;
+  List<Map<String, dynamic>> list = [];
 
   @override
   void initState() {
@@ -50,6 +60,34 @@ class _DealerScreenState extends State<DealerScreen> {
         });
       }
     });
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => reloadScreen(),
+    );
+  }
+
+  reloadScreen() async {
+    await _api.getAllDealers().then((value) {
+      setState(() {
+        list.clear();
+        value?.data?.forEach((e) {
+          var map = {
+            'dealerId': e.dealerId,
+            'dealerName': e.dealerName,
+            'businessName': e.businessName,
+            'mobileNo': e.mobileNo,
+            'createdOn': DateTimeFormatter.onlyDateLong(e.createdOn ?? ''),
+            'status': e.status,
+            'view': e.dealerId.toString(),
+            'isActive': {
+              'id': e.dealerId,
+              'status': e.status == 'ACTIVE',
+            },
+          };
+          list.add(map);
+        });
+      });
+    });
   }
 
   @override
@@ -61,6 +99,8 @@ class _DealerScreenState extends State<DealerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _api = Provider.of<ApiProvider>(context);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(defaultPadding),
       child: Column(
@@ -81,37 +121,46 @@ class _DealerScreenState extends State<DealerScreen> {
                 filterTexts: _filterTexts,
                 columns: [
                   WebDataColumn(
-                    name: 'id',
+                    name: 'dealerId',
                     label: const Text('ID'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
-                    name: 'name',
+                    name: 'dealerName',
                     label: const Text('Name'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
-                    name: 'email',
-                    label: const Text('Email'),
+                    name: 'businessName',
+                    label: const Text('Business Name'),
                     dataCell: (value) => DataCell(Text('$value')),
                     sortable: true,
                   ),
                   WebDataColumn(
-                    name: 'phone',
+                    name: 'mobileNo',
                     label: const Text('Phone'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
-                    name: 'onboardingDate',
+                    name: 'createdOn',
                     label: const Text('Onboarded'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
-                    name: 'isActive',
-                    label: const Text('Active'),
-                    dataCell: (value) => value
-                        ? const DataCell(Text('Yes'))
-                        : const DataCell(Text('No')),
+                    name: 'status',
+                    label: const Text('Status'),
+                    dataCell: (value) {
+                      return DataCell(
+                        Text(
+                          '$value',
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    color: getColorByStatus(value),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                      );
+                    },
                   ),
                   WebDataColumn(
                       sortable: false,
@@ -121,29 +170,42 @@ class _DealerScreenState extends State<DealerScreen> {
                         return DataCell(
                           IconButton(
                               onPressed: () {
+                                HomeContainer.args = value;
                                 widget.navigateMenu(31);
                               },
                               icon: const Icon(LineAwesomeIcons.eye)),
                         );
                       }),
                   WebDataColumn(
-                    name: 'status',
+                    name: 'isActive',
                     label: const Text('Toggle Status'),
                     sortable: false,
                     dataCell: (value) {
-                      return DataCell(Switch(
-                        value: dummyUserList.elementAt(value - 1)['isActive'],
-                        onChanged: (state) {
-                          setState(() {
-                            dummyUserList.elementAt(value - 1)['isActive'] =
-                                state;
-                          });
-                        },
-                      ));
+                      return DataCell(
+                        Switch(
+                          value: value['status'],
+                          onChanged: (state) async {
+                            _api
+                                .updateUser(
+                                    Api.dealers,
+                                    {
+                                      'status': state
+                                          ? UserStatus.ACTIVE.name
+                                          : UserStatus.BLOCKED.name
+                                    },
+                                    value['id'])
+                                .then(
+                              (value) {
+                                reloadScreen();
+                              },
+                            );
+                          },
+                        ),
+                      );
                     },
                   ),
                 ],
-                rows: dummyUserList,
+                rows: list,
                 selectedRowKeys: _selectedRowKeys,
                 onTapRow: (rows, index) {
                   log('onTapRow(): index = $index, row = ${rows[index]}');
