@@ -49,3 +49,21 @@ extension HexColor on Color {
       '${green.toRadixString(16).padLeft(2, '0')}'
       '${blue.toRadixString(16).padLeft(2, '0')}';
 }
+
+Color getColorByStatus(String status) {
+  switch (status) {
+    case 'CREATED':
+      return const Color.fromARGB(255, 0, 75, 3);
+    case 'PENDING':
+      return pendingColor;
+    case 'APPROVED':
+    case 'ACTIVE':
+      return acceptedColor;
+    case 'DECLINED':
+    case 'SUSPENDED':
+    case 'BLOCKED':
+      return rejectedColor;
+    default:
+      return textColorDark;
+  }
+}

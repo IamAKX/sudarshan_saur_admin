@@ -15,6 +15,7 @@ import '../../utils/responsive.dart';
 class HomeContainer extends StatefulWidget {
   const HomeContainer({super.key});
   static const String routePath = '/homeContainer';
+  static dynamic args;
   static GlobalKey<ScaffoldState> scafoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -33,11 +34,17 @@ class _HomeContainerState extends State<HomeContainer> {
   Widget getMenuFromIndex() {
     switch (selectedIndex) {
       case 1:
-        return DashboardScreen(navigateMenu: navigateMenu);
+        return DashboardScreen(
+          navigateMenu: navigateMenu,
+        );
       case 2:
-        return CustomerScreen(navigateMenu: navigateMenu);
+        return CustomerScreen(
+          navigateMenu: navigateMenu,
+        );
       case 21:
-        return CustomerDetail(navigateMenu: navigateMenu);
+        return CustomerDetail(
+          navigateMenu: navigateMenu,
+        );
       case 3:
         return DealerScreen(navigateMenu: navigateMenu);
       case 31:

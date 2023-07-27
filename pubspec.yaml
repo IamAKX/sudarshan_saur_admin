@@ -17,9 +17,10 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_html: any
-  flutter_svg: ^2.0.7
   flutter_native_splash: ^2.3.1
+  flutter_svg: ^2.0.7
   flutter_web_data_table: ^1.0.0
+  fluttertoast: ^8.2.2
   google_fonts: any
   intl: ^0.18.1
   introduction_screen: ^3.1.8

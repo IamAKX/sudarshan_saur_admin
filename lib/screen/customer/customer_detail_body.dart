@@ -1,10 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:saur_admin/utils/colors.dart';
-import 'package:saur_admin/widgets/gaps.dart';
+import 'dart:developer';
 
+import 'package:flutter/material.dart';
+import 'package:saur_admin/model/customer_model.dart';
+import 'package:saur_admin/utils/colors.dart';
+import 'package:saur_admin/utils/helper_methods.dart';
+import 'package:saur_admin/widgets/date_time_formatter.dart';
+import 'package:saur_admin/widgets/gaps.dart';
+import 'package:collection/collection.dart';
 import '../../utils/theme.dart';
 
-Card getCustomerWarrentyCard(BuildContext context) {
+Card getCustomerWarrentyCard(
+    BuildContext context, CustomerModel? customerModel) {
   return Card(
     color: Colors.white,
     child: Container(
@@ -26,7 +32,8 @@ Card getCustomerWarrentyCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '268899',
+            customerModel?.warrantyDetails?.firstOrNull?.warrantySerialNo ??
+                '-',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -39,7 +46,7 @@ Card getCustomerWarrentyCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            'C00374/525',
+            customerModel?.warrantyDetails?.firstOrNull?.invoiceNo ?? '-',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -48,11 +55,13 @@ Card getCustomerWarrentyCard(BuildContext context) {
           ),
           verticalGap(defaultPadding),
           Text(
-            'Issued On',
+            'Installed On',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '2022-11-15',
+            DateTimeFormatter.onlyDateShort(
+                customerModel?.warrantyDetails?.firstOrNull?.installationDate ??
+                    ''),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -65,7 +74,7 @@ Card getCustomerWarrentyCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '200 WUGL-A 58X2100-10 Guarantee*',
+            '${customerModel?.warrantyDetails?.firstOrNull?.itemDescription ?? ''} ${customerModel?.warrantyDetails?.firstOrNull?.model ?? ''} ${customerModel?.warrantyDetails?.firstOrNull?.guranteePeriod ?? ''}',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -78,7 +87,8 @@ Card getCustomerWarrentyCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '2037-11-15',
+            DateTimeFormatter.onlyDateShort(
+                customerModel?.warrantyDetails?.firstOrNull?.validTill ?? ''),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -91,7 +101,7 @@ Card getCustomerWarrentyCard(BuildContext context) {
   );
 }
 
-Card getCustomerDetailCard(BuildContext context) {
+Card getCustomerDetailCard(BuildContext context, CustomerModel? customerModel) {
   return Card(
     color: Colors.white,
     child: Container(
@@ -114,7 +124,7 @@ Card getCustomerDetailCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            'C-592, Suncity Manor, North School Road, Hyderabad, Telangana - 105523',
+            prepareAddress(customerModel?.address),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -127,7 +137,7 @@ Card getCustomerDetailCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '27-08-2022',
+            DateTimeFormatter.onlyDateShort(customerModel?.createdOn ?? ''),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -140,7 +150,7 @@ Card getCustomerDetailCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '03-07-2023 11:53 PM',
+            DateTimeFormatter.onlyDateShort(customerModel?.lastLogin ?? ''),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -153,7 +163,8 @@ Card getCustomerDetailCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '13-05-2023 11:53 PM',
+            DateTimeFormatter.onlyDateShort(
+                customerModel?.lastPurchaseDate ?? ''),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -166,7 +177,7 @@ Card getCustomerDetailCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            'Innovation Tech Pvt. Ltd.',
+            '-',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
