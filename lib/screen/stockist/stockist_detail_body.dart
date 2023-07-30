@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:saur_admin/model/stockist_model.dart';
 import 'package:saur_admin/utils/colors.dart';
 import 'package:saur_admin/widgets/gaps.dart';
 import 'package:saur_admin/widgets/input_field_light.dart';
 
 import '../../utils/theme.dart';
+import '../../widgets/date_time_formatter.dart';
 
-Card getDealerUnderStockist(BuildContext context) {
+Card getDealerUnderStockist(
+    BuildContext context, StockistModel? stockistModel) {
   return Card(
     color: Colors.white,
     child: Container(
@@ -69,15 +72,20 @@ Card getDealerUnderStockist(BuildContext context) {
               )
             ],
           ),
-          verticalGap(defaultPadding),
+          verticalGap(defaultPadding),  
           SizedBox(
             height: MediaQuery.of(context).size.height -
                 (defaultPadding * 15 + 100),
             child: ListView.separated(
                 shrinkWrap: true,
                 itemBuilder: (context, index) => ListTile(
-                      title: Text('Dealer $index'),
-                      subtitle: Text('dealer$index.@gmail.com'),
+                      title: Text(stockistModel?.dealers
+                              ?.elementAt(index)
+                              .businessName ??
+                          ''),
+                      subtitle: Text(
+                          stockistModel?.dealers?.elementAt(index).dealerName ??
+                              ''),
                       leading: Image.asset(
                         'assets/images/dummy_logo.jpg',
                         width: 60,
@@ -86,7 +94,7 @@ Card getDealerUnderStockist(BuildContext context) {
                 separatorBuilder: (context, index) => const Divider(
                       color: dividerColor,
                     ),
-                itemCount: 20),
+                itemCount: stockistModel?.dealers?.length ?? 0),
           )
         ],
       ),
@@ -94,7 +102,7 @@ Card getDealerUnderStockist(BuildContext context) {
   );
 }
 
-Card getStockistDetailCard(BuildContext context) {
+Card getStockistDetailCard(BuildContext context, StockistModel? stockistModel) {
   return Card(
     color: Colors.white,
     child: Container(
@@ -117,7 +125,7 @@ Card getStockistDetailCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '27-08-2022',
+            DateTimeFormatter.onlyDateShort(stockistModel?.createdOn ?? ''),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -130,7 +138,7 @@ Card getStockistDetailCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '03-07-2023 11:53 PM',
+            DateTimeFormatter.onlyDateShort(stockistModel?.lastLogin ?? ''),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -143,7 +151,7 @@ Card getStockistDetailCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '13-05-2023 11:53 PM',
+            DateTimeFormatter.onlyDateShort(stockistModel?.updatedOn ?? ''),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -156,7 +164,7 @@ Card getStockistDetailCard(BuildContext context) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '1000',
+            '-',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -165,11 +173,11 @@ Card getStockistDetailCard(BuildContext context) {
           ),
           verticalGap(defaultPadding),
           Text(
-            'Last alloted dealer',
+            'Total assigned dealer',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            'Sham Lal / sham.lal@gmail.com',
+            stockistModel?.dealers?.length.toString() ?? '',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,

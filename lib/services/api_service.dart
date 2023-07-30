@@ -8,8 +8,10 @@ import 'package:saur_admin/model/dealer_model.dart';
 import 'package:saur_admin/model/list/list_customer_model.dart';
 import 'package:saur_admin/model/list/list_dealer_for_table.dart';
 import 'package:saur_admin/model/list/list_dealer_model.dart';
+import 'package:saur_admin/model/stockist_model.dart';
 import 'package:saur_admin/services/toast_service.dart';
 
+import '../model/list/list_stockist_model.dart';
 import '../utils/api.dart';
 
 enum ApiStatus { ideal, loading, success, failed }
@@ -128,6 +130,42 @@ class ApiProvider extends ChangeNotifier {
     return userModel;
   }
 
+  Future<StockistModel?> getStockistById(int id) async {
+    status = ApiStatus.loading;
+    notifyListeners();
+    StockistModel? userModel;
+
+    try {
+      Response response = await _dio.get(
+        '${Api.stockist}/$id',
+        options: Options(
+          contentType: 'application/json',
+          responseType: ResponseType.json,
+        ),
+      );
+      if (response.statusCode == 200) {
+        userModel = StockistModel.fromMap(response.data['data']);
+        status = ApiStatus.success;
+        notifyListeners();
+        return userModel;
+      }
+    } on DioException catch (e) {
+      status = ApiStatus.failed;
+      var resBody = e.response?.data ?? {};
+      log(e.response?.data.toString() ?? e.response.toString());
+      notifyListeners();
+      ToastService.instance.showError('Error : ${resBody['message']}');
+    } catch (e) {
+      status = ApiStatus.failed;
+      notifyListeners();
+      ToastService.instance.showError(e.toString());
+      log(e.toString());
+    }
+    status = ApiStatus.failed;
+    notifyListeners();
+    return userModel;
+  }
+
   Future<ListCustomerModel?> getAllCustomer() async {
     status = ApiStatus.loading;
     notifyListeners();
@@ -177,6 +215,42 @@ class ApiProvider extends ChangeNotifier {
       );
       if (response.statusCode == 200) {
         list = ListDealerModel.fromMap(response.data);
+        status = ApiStatus.success;
+        notifyListeners();
+        return list;
+      }
+    } on DioException catch (e) {
+      status = ApiStatus.failed;
+      var resBody = e.response?.data ?? {};
+      log(e.response?.data.toString() ?? e.response.toString());
+      notifyListeners();
+      ToastService.instance.showError('Error : ${resBody['message']}');
+    } catch (e) {
+      status = ApiStatus.failed;
+      notifyListeners();
+      ToastService.instance.showError(e.toString());
+      log(e.toString());
+    }
+    status = ApiStatus.failed;
+    notifyListeners();
+    return list;
+  }
+
+  Future<ListStockistModel?> getAllStockist() async {
+    status = ApiStatus.loading;
+    notifyListeners();
+    ListStockistModel? list;
+    try {
+      Response response = await _dio.get(
+        Api.stockist,
+        options: Options(
+          contentType: 'application/json',
+          responseType: ResponseType.json,
+        ),
+      );
+      log(response.data.toString());
+      if (response.statusCode == 200) {
+        list = ListStockistModel.fromMap(response.data);
         status = ApiStatus.success;
         notifyListeners();
         return list;

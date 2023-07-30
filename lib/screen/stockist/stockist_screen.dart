@@ -4,12 +4,18 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_data_table/web_data_table.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:saur_admin/utils/dummy/dummy_users.dart';
+import 'package:provider/provider.dart';
 import 'package:saur_admin/utils/theme.dart';
 import 'package:saur_admin/widgets/input_field_light.dart';
 
+import '../../services/api_service.dart';
+import '../../utils/api.dart';
+import '../../utils/colors.dart';
+import '../../utils/enum.dart';
+import '../../widgets/date_time_formatter.dart';
 import '../../widgets/gaps.dart';
 import '../../widgets/header.dart';
+import '../home_container/home_container.dart';
 
 class StockistScreen extends StatefulWidget {
   const StockistScreen({super.key, required this.navigateMenu});
@@ -28,6 +34,9 @@ class _StockistScreenState extends State<StockistScreen> {
   int? _latestTick;
   final List<String> _selectedRowKeys = [];
   int _rowsPerPage = 10;
+
+  late ApiProvider _api;
+  List<Map<String, dynamic>> list = [];
 
   @override
   void initState() {
@@ -50,6 +59,36 @@ class _StockistScreenState extends State<StockistScreen> {
         });
       }
     });
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => reloadScreen(),
+    );
+  }
+
+  reloadScreen() async {
+    await _api.getAllStockist().then((value) {
+      setState(() {
+        list.clear();
+
+        value?.data?.forEach((e) {
+          var map = {
+            'stockistId': e.stockistId,
+            'stockistName': e.stockistName,
+            'businessName': e.businessName,
+            'mobileNo': e.mobileNo,
+            'createdOn': DateTimeFormatter.onlyDateLong(e.createdOn ?? ''),
+            'status': e.status,
+            'view': e.stockistId.toString(),
+            'isActive': {
+              'id': e.stockistId,
+              'status': (e.status ?? UserStatus.BLOCKED.name) == 'ACTIVE',
+            },
+          };
+          list.add(map);
+          debugPrint(list.toString());
+        });
+      });
+    });
   }
 
   @override
@@ -61,6 +100,7 @@ class _StockistScreenState extends State<StockistScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _api = Provider.of<ApiProvider>(context);
     return SingleChildScrollView(
       padding: const EdgeInsets.all(defaultPadding),
       child: Column(
@@ -81,37 +121,43 @@ class _StockistScreenState extends State<StockistScreen> {
                 filterTexts: _filterTexts,
                 columns: [
                   WebDataColumn(
-                    name: 'id',
+                    name: 'stockistId',
                     label: const Text('ID'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
-                    name: 'name',
+                    name: 'stockistName',
                     label: const Text('Name'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
-                    name: 'email',
-                    label: const Text('Email'),
+                    name: 'businessName',
+                    label: const Text('Business Name'),
                     dataCell: (value) => DataCell(Text('$value')),
                     sortable: true,
                   ),
                   WebDataColumn(
-                    name: 'phone',
+                    name: 'mobileNo',
                     label: const Text('Phone'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
-                    name: 'onboardingDate',
+                    name: 'createdOn',
                     label: const Text('Onboarded'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
-                    name: 'isActive',
-                    label: const Text('Active'),
-                    dataCell: (value) => value
-                        ? const DataCell(Text('Yes'))
-                        : const DataCell(Text('No')),
+                    name: 'status',
+                    label: const Text('Status'),
+                    dataCell: (value) => DataCell(
+                      Text(
+                        '$value',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              color: getColorByStatus(value),
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ),
                   ),
                   WebDataColumn(
                       sortable: false,
@@ -121,29 +167,41 @@ class _StockistScreenState extends State<StockistScreen> {
                         return DataCell(
                           IconButton(
                               onPressed: () {
+                                HomeContainer.args = value;
+
                                 widget.navigateMenu(41);
                               },
                               icon: const Icon(LineAwesomeIcons.eye)),
                         );
                       }),
                   WebDataColumn(
-                    name: 'status',
+                    name: 'isActive',
                     label: const Text('Toggle Status'),
                     sortable: false,
                     dataCell: (value) {
                       return DataCell(Switch(
-                        value: dummyUserList.elementAt(value - 1)['isActive'],
-                        onChanged: (state) {
-                          setState(() {
-                            dummyUserList.elementAt(value - 1)['isActive'] =
-                                state;
-                          });
+                        value: value['status'],
+                        onChanged: (state) async {
+                          _api
+                              .updateUser(
+                                  Api.stockist,
+                                  {
+                                    'status': state
+                                        ? UserStatus.ACTIVE.name
+                                        : UserStatus.BLOCKED.name
+                                  },
+                                  value['id'])
+                              .then(
+                            (value) {
+                              reloadScreen();
+                            },
+                          );
                         },
                       ));
                     },
                   ),
                 ],
-                rows: dummyUserList,
+                rows: list,
                 selectedRowKeys: _selectedRowKeys,
                 onTapRow: (rows, index) {
                   log('onTapRow(): index = $index, row = ${rows[index]}');
