@@ -92,7 +92,7 @@ class SideMenu extends StatelessWidget {
                   },
                 ),
                 SideMenuItem(
-                  title: 'Serial Number',
+                  title: 'Warranty Request',
                   iconData: LineAwesomeIcons.poll_h,
                   press: () {
                     navigateMenu(5);

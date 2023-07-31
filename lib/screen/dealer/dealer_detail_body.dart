@@ -131,7 +131,7 @@ Card getDealerDetailCard(BuildContext context, DealerModel? dealerModel) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            DateTimeFormatter.onlyDateShort(dealerModel?.lastLogin ?? ''),
+            DateTimeFormatter.onlyDateShortWithTime(dealerModel?.lastLogin ?? ''),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,

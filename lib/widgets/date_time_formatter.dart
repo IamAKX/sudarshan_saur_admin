@@ -37,6 +37,16 @@ class DateTimeFormatter {
     }
   }
 
+   static String onlyDateShortWithTime(String rawDate) {
+    try {
+      DateTime date = DateFormat(databaseFormat).parse(rawDate);
+      return DateFormat('dd-MM-yyyy hh:mm a').format(date);
+    } catch (e) {
+      return '';
+    }
+  }
+
+
   static String dateTime(String rawDate) {
     try {
       DateTime date = DateFormat(databaseFormat).parse(rawDate);

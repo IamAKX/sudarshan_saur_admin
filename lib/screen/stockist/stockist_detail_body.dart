@@ -72,7 +72,7 @@ Card getDealerUnderStockist(
               )
             ],
           ),
-          verticalGap(defaultPadding),  
+          verticalGap(defaultPadding),
           SizedBox(
             height: MediaQuery.of(context).size.height -
                 (defaultPadding * 15 + 100),
@@ -138,7 +138,8 @@ Card getStockistDetailCard(BuildContext context, StockistModel? stockistModel) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            DateTimeFormatter.onlyDateShort(stockistModel?.lastLogin ?? ''),
+            DateTimeFormatter.onlyDateShortWithTime(
+                stockistModel?.lastLogin ?? ''),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,

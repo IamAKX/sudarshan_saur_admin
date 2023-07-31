@@ -4,12 +4,16 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_data_table/web_data_table.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:saur_admin/utils/dummy/dummy_serial_number.dart';
+import 'package:provider/provider.dart';
 import 'package:saur_admin/utils/theme.dart';
 import 'package:saur_admin/widgets/input_field_light.dart';
 
+import '../../services/api_service.dart';
+import '../../utils/colors.dart';
+import '../../widgets/date_time_formatter.dart';
 import '../../widgets/gaps.dart';
 import '../../widgets/header.dart';
+import '../home_container/home_container.dart';
 
 class SerialNumberScreen extends StatefulWidget {
   const SerialNumberScreen({super.key, required this.navigateMenu});
@@ -28,6 +32,9 @@ class _SerialNumberScreenState extends State<SerialNumberScreen> {
   int? _latestTick;
   final List<String> _selectedRowKeys = [];
   int _rowsPerPage = 10;
+
+  late ApiProvider _api;
+  List<Map<String, dynamic>> list = [];
 
   @override
   void initState() {
@@ -50,6 +57,32 @@ class _SerialNumberScreenState extends State<SerialNumberScreen> {
         });
       }
     });
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => reloadScreen(),
+    );
+  }
+
+  reloadScreen() async {
+    await _api.getAllWarrantyRequest().then((value) {
+      setState(() {
+        list.clear();
+        value?.data?.forEach((e) {
+          var map = {
+            'warrantySerialNo': e.warrantySerialNo,
+            'customerId': e.customer?.customerId,
+            'customerName': e.customer?.customerName,
+            'stockistId': e.stockists?.stockistId,
+            'stockistName': e.stockists?.stockistName,
+            'initUserType': e.initUserType,
+            'createdOn': DateTimeFormatter.onlyDateLong(e.createdOn ?? ''),
+            'allocationStatus': e.allocationStatus ?? '',
+            'view': e.warrantySerialNo.toString(),
+          };
+          list.add(map);
+        });
+      });
+    });
   }
 
   @override
@@ -61,6 +94,7 @@ class _SerialNumberScreenState extends State<SerialNumberScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _api = Provider.of<ApiProvider>(context);
     return SingleChildScrollView(
       padding: const EdgeInsets.all(defaultPadding),
       child: Column(
@@ -81,34 +115,24 @@ class _SerialNumberScreenState extends State<SerialNumberScreen> {
                 filterTexts: _filterTexts,
                 columns: [
                   WebDataColumn(
-                    name: 'id',
-                    label: const Text('ID'),
+                    name: 'warrantySerialNo',
+                    label: const Text('Serial'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
-                    name: 'serialNumber',
-                    label: const Text('Serial Number'),
+                    name: 'customerId',
+                    label: const Text('Cust. Id'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
-                    name: 'dealerName',
-                    label: const Text('Dealer Name'),
+                    name: 'customerName',
+                    label: const Text('Customer Name'),
                     dataCell: (value) => DataCell(Text('$value')),
                     sortable: true,
                   ),
                   WebDataColumn(
-                    name: 'dealerId',
-                    label: const Text('Dealer Id'),
-                    dataCell: (value) => DataCell(Text('$value')),
-                  ),
-                  WebDataColumn(
-                    name: 'dealerBusiness',
-                    label: const Text('Business Name'),
-                    dataCell: (value) => DataCell(Text('$value')),
-                  ),
-                  WebDataColumn(
-                    name: 'assignedOn',
-                    label: const Text('Assigned On'),
+                    name: 'stockistId',
+                    label: const Text('Stockist Id'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
@@ -117,12 +141,46 @@ class _SerialNumberScreenState extends State<SerialNumberScreen> {
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
-                    name: 'stockistId',
-                    label: const Text('Stockist Id'),
+                    name: 'initUserType',
+                    label: const Text('Initiator'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
+                  WebDataColumn(
+                    sortable: false,
+                    name: 'createdOn',
+                    label: const Text('Created On'),
+                    dataCell: (value) => DataCell(Text('$value')),
+                  ),
+                  WebDataColumn(
+                    name: 'allocationStatus',
+                    label: const Text('Status'),
+                    dataCell: (value) => DataCell(
+                      Text(
+                        '$value',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              color: getColorByStatus(value),
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ),
+                  ),
+                  WebDataColumn(
+                    sortable: false,
+                    name: 'view',
+                    label: const Text('View'),
+                    dataCell: (value) {
+                      return DataCell(
+                        IconButton(
+                            onPressed: () {
+                              HomeContainer.args = value;
+                              widget.navigateMenu(51);
+                            },
+                            icon: const Icon(LineAwesomeIcons.eye)),
+                      );
+                    },
+                  ),
                 ],
-                rows: dummySerialNumberList,
+                rows: list,
                 selectedRowKeys: _selectedRowKeys,
                 onTapRow: (rows, index) {
                   log('onTapRow(): index = $index, row = ${rows[index]}');

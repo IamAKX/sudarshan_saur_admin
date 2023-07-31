@@ -110,7 +110,7 @@ class _CustomerDetailState extends State<CustomerDetail> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 getCustomerDetailCard(context, customerModel),
-                getCustomerWarrentyCard(context, customerModel)
+                // getCustomerWarrentyCard(context, customerModel)
               ],
             ),
             desktop: Row(
@@ -118,9 +118,7 @@ class _CustomerDetailState extends State<CustomerDetail> {
                 Expanded(
                   child: getCustomerDetailCard(context, customerModel),
                 ),
-                Expanded(
-                  child: getCustomerWarrentyCard(context, customerModel),
-                )
+                Expanded(child: Container())
               ],
             ),
           )

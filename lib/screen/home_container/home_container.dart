@@ -11,6 +11,7 @@ import 'package:saur_admin/screen/stockist/stockist_detail.dart';
 import 'package:saur_admin/screen/stockist/stockist_screen.dart';
 
 import '../../utils/responsive.dart';
+import '../serial_number/serial_detail.dart';
 
 class HomeContainer extends StatefulWidget {
   const HomeContainer({super.key});
@@ -55,6 +56,8 @@ class _HomeContainerState extends State<HomeContainer> {
         return StockistDetail(navigateMenu: navigateMenu);
       case 5:
         return SerialNumberScreen(navigateMenu: navigateMenu);
+      case 51:
+        return SerialKeyDetail(navigateMenu: navigateMenu);
       case 6:
         return ReportScreen(navigateMenu: navigateMenu);
       default:

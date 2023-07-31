@@ -53,6 +53,7 @@ extension HexColor on Color {
 Color getColorByStatus(String status) {
   switch (status) {
     case 'CREATED':
+    case 'ALLOCATED':
       return const Color.fromARGB(255, 0, 75, 3);
     case 'PENDING':
       return pendingColor;

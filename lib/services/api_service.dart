@@ -1,14 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
-
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:saur_admin/model/customer_model.dart';
 import 'package:saur_admin/model/dealer_model.dart';
 import 'package:saur_admin/model/list/list_customer_model.dart';
-import 'package:saur_admin/model/list/list_dealer_for_table.dart';
 import 'package:saur_admin/model/list/list_dealer_model.dart';
+import 'package:saur_admin/model/list/list_warranty_model.dart';
 import 'package:saur_admin/model/stockist_model.dart';
+import 'package:saur_admin/model/warranty_model.dart';
 import 'package:saur_admin/services/toast_service.dart';
 
 import '../model/list/list_stockist_model.dart';
@@ -295,6 +296,114 @@ class ApiProvider extends ChangeNotifier {
       log(e.response?.data.toString() ?? e.response.toString());
       notifyListeners();
       ToastService.instance.showError('Error : Invalid serial number');
+    } catch (e) {
+      status = ApiStatus.failed;
+      notifyListeners();
+      ToastService.instance.showError(e.toString());
+      log(e.toString());
+    }
+    status = ApiStatus.failed;
+    notifyListeners();
+    return false;
+  }
+
+  Future<ListWarrantyModel?> getAllWarrantyRequest() async {
+    status = ApiStatus.loading;
+    notifyListeners();
+    ListWarrantyModel? warrantyModel;
+    try {
+      Response response = await _dio.get(
+        Api.requestWarranty,
+        options: Options(
+          contentType: 'application/json',
+          responseType: ResponseType.json,
+        ),
+      );
+      log(response.data.toString());
+      if (response.statusCode == 200) {
+        warrantyModel = ListWarrantyModel.fromMap(response.data);
+        status = ApiStatus.success;
+        notifyListeners();
+        return warrantyModel;
+      }
+    } on DioException catch (e) {
+      status = ApiStatus.failed;
+      var resBody = e.response?.data ?? {};
+      log(e.response?.data.toString() ?? e.response.toString());
+      notifyListeners();
+      ToastService.instance.showError('Error : ${resBody['message']}');
+    } catch (e) {
+      status = ApiStatus.failed;
+      notifyListeners();
+      ToastService.instance.showError(e.toString());
+      log(e.toString());
+    }
+    status = ApiStatus.failed;
+    notifyListeners();
+    return warrantyModel;
+  }
+
+  Future<WarrantyModel?> getWarrantyRequestBySerial(String serialNumber) async {
+    status = ApiStatus.loading;
+    notifyListeners();
+    WarrantyModel? warrantyModel;
+    try {
+      Response response = await _dio.get(
+        '${Api.requestWarranty}/$serialNumber',
+        options: Options(
+          contentType: 'application/json',
+          responseType: ResponseType.json,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        warrantyModel = WarrantyModel.fromMap(response.data['data']);
+        status = ApiStatus.success;
+        notifyListeners();
+        return warrantyModel;
+      }
+    } on DioException catch (e) {
+      status = ApiStatus.failed;
+      var resBody = e.response?.data ?? {};
+      log(e.response?.data.toString() ?? e.response.toString());
+      notifyListeners();
+      ToastService.instance.showError('Error : ${resBody['message']}');
+    } catch (e) {
+      status = ApiStatus.failed;
+      notifyListeners();
+      ToastService.instance.showError(e.toString());
+      log(e.toString());
+    }
+    status = ApiStatus.failed;
+    notifyListeners();
+    return warrantyModel;
+  }
+
+  Future<bool> updateWarrantyRequest(
+      Map<String, dynamic> map, String id) async {
+    status = ApiStatus.loading;
+
+    notifyListeners();
+    try {
+      Response response = await _dio.put(
+        '${Api.requestWarranty}/$id',
+        data: json.encode(map),
+        options: Options(
+          contentType: 'application/json',
+          responseType: ResponseType.json,
+        ),
+      );
+      if (response.statusCode == 200) {
+        status = ApiStatus.success;
+        notifyListeners();
+        return true;
+      }
+    } on DioException catch (e) {
+      status = ApiStatus.failed;
+      var resBody = e.response?.data ?? {};
+      log(e.response?.data.toString() ?? e.response.toString());
+      notifyListeners();
+      ToastService.instance.showError('Error : ${resBody['message']}');
     } catch (e) {
       status = ApiStatus.failed;
       notifyListeners();

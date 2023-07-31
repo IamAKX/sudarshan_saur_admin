@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -18,6 +19,8 @@ void main() async {
 
   FlutterNativeSplash.remove();
   // runApp(const MyApp());
+  HttpOverrides.global = MyHttpOverrides();
+
   runZonedGuarded(() async {
     runApp(const MyApp()); // starting point of app
   }, (error, stackTrace) {});
@@ -45,5 +48,18 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: NavRoute.generatedRoute,
       ),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          ((X509Certificate cert, String host, int port) {
+        final isValidHost =
+            ["icrmonline.in"].contains(host); // <-- allow only hosts in array
+        return isValidHost;
+      });
   }
 }

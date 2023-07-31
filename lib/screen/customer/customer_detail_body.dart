@@ -74,7 +74,7 @@ Card getCustomerWarrentyCard(
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '${customerModel?.warrantyDetails?.firstOrNull?.itemDescription ?? ''} ${customerModel?.warrantyDetails?.firstOrNull?.model ?? ''} ${customerModel?.warrantyDetails?.firstOrNull?.guranteePeriod ?? ''}',
+            '${customerModel?.warrantyDetails?.firstOrNull?.itemDescription ?? ''} ${customerModel?.warrantyDetails?.firstOrNull?.model ?? ''}}',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -88,7 +88,8 @@ Card getCustomerWarrentyCard(
           ),
           Text(
             DateTimeFormatter.onlyDateShort(
-                customerModel?.warrantyDetails?.firstOrNull?.validTill ?? ''),
+                customerModel?.warrantyDetails?.firstOrNull?.guaranteePeriod ??
+                    ''),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -150,7 +151,7 @@ Card getCustomerDetailCard(BuildContext context, CustomerModel? customerModel) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            DateTimeFormatter.onlyDateShort(customerModel?.lastLogin ?? ''),
+            DateTimeFormatter.onlyDateShortWithTime(customerModel?.lastLogin ?? ''),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
