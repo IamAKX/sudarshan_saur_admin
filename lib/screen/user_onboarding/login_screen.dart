@@ -1,14 +1,19 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:provider/provider.dart';
 import 'package:saur_admin/screen/home_container/home_container.dart';
+import 'package:saur_admin/services/toast_service.dart';
 import 'package:saur_admin/utils/theme.dart';
 import 'package:saur_admin/widgets/gaps.dart';
 import 'package:saur_admin/widgets/input_field_light.dart';
 import 'package:saur_admin/widgets/primary_button_dark.dart';
 
+import '../../services/api_service.dart';
 import '../../utils/colors.dart';
 import '../../utils/responsive.dart';
 
@@ -21,9 +26,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  late ApiProvider _api;
   final TextEditingController _phoneCtrl = TextEditingController();
+  final TextEditingController _otpCtrl = TextEditingController();
+  String code = '';
   @override
   Widget build(BuildContext context) {
+    _api = Provider.of<ApiProvider>(context);
     return Scaffold(
       body: getBody(context),
     );
@@ -96,7 +105,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           child: const Text('Send OTP'),
-                          onPressed: () {},
+                          onPressed: () async {
+                            _api.checkAdminPhone(_phoneCtrl.text).then((value) {
+                              if (value) {
+                                code =
+                                    (Random().nextInt(9000) + 1000).toString();
+                                _api.sendOtp(_phoneCtrl.text, code);
+                              }
+                            });
+                          },
                         ),
                       ),
                     ),
@@ -133,7 +150,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       textFieldAlignment: MainAxisAlignment.spaceAround,
                       fieldStyle: FieldStyle.underline,
-                      onCompleted: (pin) {},
+                      onCompleted: (pin) {
+                        _otpCtrl.text = pin;
+                      },
                     ),
                     verticalGap(defaultPadding * 2),
                     Padding(
@@ -141,8 +160,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           horizontal: defaultPadding * 2),
                       child: PrimaryButtonDark(
                           onPressed: () {
-                            Navigator.pushNamedAndRemoveUntil(context,
-                                HomeContainer.routePath, (route) => false);
+                            if (_otpCtrl.text == code) {
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  HomeContainer.routePath, (route) => false);
+                            } else {
+                              ToastService.instance.showError('Invalid OTP');
+                            }
                           },
                           label: 'Login',
                           isDisabled: false,
