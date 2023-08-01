@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:saur_admin/model/customer_model.dart';
+import 'package:saur_admin/model/dashboard_metrics.dart';
 import 'package:saur_admin/model/dealer_model.dart';
 import 'package:saur_admin/model/list/list_customer_model.dart';
 import 'package:saur_admin/model/list/list_dealer_model.dart';
@@ -11,6 +12,7 @@ import 'package:saur_admin/model/list/list_warranty_model.dart';
 import 'package:saur_admin/model/stockist_model.dart';
 import 'package:saur_admin/model/warranty_model.dart';
 import 'package:saur_admin/services/toast_service.dart';
+import 'package:saur_admin/utils/enum.dart';
 
 import '../model/list/list_stockist_model.dart';
 import '../utils/api.dart';
@@ -479,5 +481,129 @@ class ApiProvider extends ChangeNotifier {
     status = ApiStatus.failed;
     notifyListeners();
     return false;
+  }
+
+  Future<DashboardMetrics> getDashboardMetrics() async {
+    DashboardMetrics dashboardMetrics = DashboardMetrics(
+      customerCreated: 0,
+      customerActive: 0,
+      customerSuspended: 0,
+      customerBlocked: 0,
+      stockistCreated: 0,
+      stockistActive: 0,
+      stockistSuspended: 0,
+      stockistBlocked: 0,
+      dealerCreated: 0,
+      dealerActive: 0,
+      dealerSuspended: 0,
+      dealerBlocked: 0,
+      warrantyRequestPending: 0,
+      warrantyRequestApproved: 0,
+      warrantyRequestDeclined: 0,
+    );
+    status = ApiStatus.loading;
+    notifyListeners();
+    try {
+      Response response = await _dio.get(
+        Api.count,
+        options: Options(
+          contentType: 'application/json',
+          responseType: ResponseType.json,
+        ),
+      );
+      if (response.statusCode == 200) {
+        status = ApiStatus.success;
+        // parsing stockists
+        var stockistArr =
+            response.data['data']['data']['stockists']['statuses'];
+        for (var item in stockistArr) {
+          switch (item['status']) {
+            case 'CREATED':
+              dashboardMetrics.stockistCreated = item['count'];
+              break;
+            case 'ACTIVE':
+              dashboardMetrics.stockistActive = item['count'];
+              break;
+            case 'SUSPENDED':
+              dashboardMetrics.stockistSuspended = item['count'];
+              break;
+            case 'BLOCKED':
+              dashboardMetrics.stockistBlocked = item['count'];
+              break;
+          }
+        }
+
+        // parsing customer
+        var customerArr =
+            response.data['data']['data']['customers']['statuses'];
+        for (var item in customerArr) {
+          switch (item['status']) {
+            case 'CREATED':
+              dashboardMetrics.customerCreated = item['count'];
+              break;
+            case 'ACTIVE':
+              dashboardMetrics.customerActive = item['count'];
+              break;
+            case 'SUSPENDED':
+              dashboardMetrics.customerSuspended = item['count'];
+              break;
+            case 'BLOCKED':
+              dashboardMetrics.customerBlocked = item['count'];
+              break;
+          }
+        }
+
+        // parsing dealer
+        var dealerArr = response.data['data']['data']['dealers']['statuses'];
+        for (var item in dealerArr) {
+          switch (item['status']) {
+            case 'CREATED':
+              dashboardMetrics.dealerCreated = item['count'];
+              break;
+            case 'ACTIVE':
+              dashboardMetrics.dealerActive = item['count'];
+              break;
+            case 'SUSPENDED':
+              dashboardMetrics.dealerSuspended = item['count'];
+              break;
+            case 'BLOCKED':
+              dashboardMetrics.dealerBlocked = item['count'];
+              break;
+          }
+        }
+
+        // parsing warrantyDetails
+        var warrantyDetailsArr =
+            response.data['data']['data']['warrantyDetails']['statuses'];
+        for (var item in warrantyDetailsArr) {
+          switch (item['status']) {
+            case 'PENDING':
+              dashboardMetrics.warrantyRequestPending = item['count'];
+              break;
+            case 'APPROVED':
+              dashboardMetrics.warrantyRequestApproved = item['count'];
+              break;
+            case 'DECLINED':
+              dashboardMetrics.warrantyRequestDeclined = item['count'];
+              break;
+          }
+        }
+        notifyListeners();
+        return dashboardMetrics;
+      }
+    } on DioException catch (e) {
+      status = ApiStatus.failed;
+      var resBody = e.response?.data ?? {};
+      log(e.response?.data.toString() ?? e.response.toString());
+      notifyListeners();
+    } catch (e) {
+      status = ApiStatus.failed;
+      notifyListeners();
+      ToastService.instance.showError(e.toString());
+      log(e.toString());
+    }
+    status = ApiStatus.failed;
+    notifyListeners();
+    return dashboardMetrics;
   }
 }

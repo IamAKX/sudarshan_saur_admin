@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:saur_admin/model/dashboard_metrics.dart';
 import 'package:saur_admin/widgets/gaps.dart';
 
 import '../../utils/theme.dart';
@@ -9,57 +10,72 @@ class MetricsCardGridView extends StatelessWidget {
     Key? key,
     required this.crossAxisCount,
     required this.childAspectRatio,
+    required this.metrics,
   }) : super(key: key);
 
   final int crossAxisCount;
   final double childAspectRatio;
+  final DashboardMetrics? metrics;
 
   final List<String> metricName = [
-    'Customers',
-    'Dealers',
-    'Stockists',
-    'Warranty request',
-    'Unapproved Customer',
-    'Unapproved Dealer',
-    'Unapproved Stockist',
-    'Alloted Serial Number'
+    'Customers Created',
+    'Customers Active',
+    'Customers Suspended',
+    'Customers Blocked',
+    'Dealers Created',
+    'Dealers Active',
+    'Dealers Suspended',
+    'Dealers Blocked',
+    'Stockist Created',
+    'Stockist Active',
+    'Stockist Suspended',
+    'Stockist Blocked',
+    'Warranty Approved',
+    'Warranty Pending',
+    'Warranty Declined',
   ];
 
   final List<IconData> metricIcons = [
     LineAwesomeIcons.user_1,
+    LineAwesomeIcons.user_1,
+    LineAwesomeIcons.user_1,
+    LineAwesomeIcons.user_1,
+    LineAwesomeIcons.user_tie,
+    LineAwesomeIcons.user_tie,
+    LineAwesomeIcons.user_tie,
     LineAwesomeIcons.user_tie,
     LineAwesomeIcons.user_cog,
+    LineAwesomeIcons.user_cog,
+    LineAwesomeIcons.user_cog,
+    LineAwesomeIcons.user_cog,
     LineAwesomeIcons.identification_card,
-    LineAwesomeIcons.user_clock,
-    LineAwesomeIcons.user_clock,
-    LineAwesomeIcons.user_clock,
-    LineAwesomeIcons.stream,
+    LineAwesomeIcons.identification_card,
+    LineAwesomeIcons.identification_card,
   ];
 
-  final List<String> metricValue = [
-    '1532',
-    '37',
-    '4',
-    '20',
-    '14',
-    '2',
-    '0',
-    '1291'
-  ];
+  List<String> metricValue = [];
 
   final List<Color> metricColors = [
     Colors.blue,
-    Colors.amber,
     Colors.green,
-    Colors.brown,
-    Colors.pink,
-    Colors.indigo,
+    Colors.amber,
+    Colors.red,
+    Colors.blue,
+    Colors.green,
+    Colors.amber,
+    Colors.red,
+    Colors.blue,
+    Colors.green,
+    Colors.amber,
+    Colors.red,
+    Colors.green,
     Colors.orange,
-    Colors.blueGrey,
+    Colors.red,
   ];
 
   @override
   Widget build(BuildContext context) {
+    fillMetricsValue();
     return GridView.builder(
       shrinkWrap: true,
       itemCount: metricName.length,
@@ -128,5 +144,25 @@ class MetricsCardGridView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void fillMetricsValue() {
+    metricValue = [
+      '${metrics?.customerCreated ?? 0}',
+      '${metrics?.customerActive ?? 0}',
+      '${metrics?.customerSuspended ?? 0}',
+      '${metrics?.customerBlocked ?? 0}',
+      '${metrics?.dealerCreated ?? 0}',
+      '${metrics?.dealerActive ?? 0}',
+      '${metrics?.dealerSuspended ?? 0}',
+      '${metrics?.dealerBlocked ?? 0}',
+      '${metrics?.stockistCreated ?? 0}',
+      '${metrics?.stockistActive ?? 0}',
+      '${metrics?.stockistSuspended ?? 0}',
+      '${metrics?.stockistBlocked ?? 0}',
+      '${metrics?.warrantyRequestApproved ?? 0}',
+      '${metrics?.warrantyRequestPending ?? 0}',
+      '${metrics?.warrantyRequestDeclined ?? 0}',
+    ];
   }
 }
