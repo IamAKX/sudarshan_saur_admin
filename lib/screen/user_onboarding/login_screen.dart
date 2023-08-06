@@ -160,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           horizontal: defaultPadding * 2),
                       child: PrimaryButtonDark(
                           onPressed: () {
-                            if (_otpCtrl.text == code) {
+                            if (code != '' && _otpCtrl.text == code) {
                               Navigator.pushNamedAndRemoveUntil(context,
                                   HomeContainer.routePath, (route) => false);
                             } else {
