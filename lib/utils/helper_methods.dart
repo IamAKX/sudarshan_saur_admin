@@ -1,5 +1,6 @@
 import 'package:saur_admin/model/address_model.dart';
 
 String prepareAddress(AddressModel? address) {
-  return '${address?.addressLine1}, ${address?.addressLine2}, ${address?.city}, ${address?.state} - ${address?.zipCode}';
+  if (address == null) return '-';
+  return '${address.houseNo} ${address.area},\n${address.street1},\n${address.street2},\n${address.landmark},\n${address.taluk},\n${address.town},\n${address.state} - ${address.zipCode}';
 }

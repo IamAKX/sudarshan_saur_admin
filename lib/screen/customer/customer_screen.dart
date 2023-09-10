@@ -74,7 +74,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
           var map = {
             'customerId': e.customerId,
             'customerName': e.customerName,
-            'email': e.email,
+            'email': e.email ?? '-',
             'mobileNo': e.mobileNo,
             'createdOn': DateTimeFormatter.onlyDateLong(e.createdOn ?? ''),
             'status': e.status,

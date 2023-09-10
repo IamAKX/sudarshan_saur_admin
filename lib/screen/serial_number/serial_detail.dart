@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saur_admin/model/warranty_model.dart';
+import 'package:saur_admin/model/warranty_request_model.dart';
 import 'package:saur_admin/screen/customer/customer_detail_body.dart';
 import 'package:saur_admin/screen/serial_number/serial_detail_card.dart';
 import 'package:saur_admin/services/toast_service.dart';
+import 'package:saur_admin/utils/colors.dart';
 import 'package:saur_admin/utils/enum.dart';
 
 import '../../services/api_service.dart';
@@ -30,8 +32,8 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
   bool isBlocked = false;
 
   late ApiProvider _api;
-  WarrantyModel? warrantyModel;
-
+  WarrantyRequestModel? warrantyModel;
+  final TextEditingController rejectReasonCtrl = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -41,7 +43,7 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
   }
 
   reloadScreen() async {
-    _api.getWarrantyRequestBySerial(HomeContainer.args).then((value) {
+    _api.getWarrantyRequestById(HomeContainer.args).then((value) {
       setState(() {
         warrantyModel = value;
         debugPrint(warrantyModel.toString());
@@ -69,56 +71,79 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
             mobile: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Row(
-                  children: [
-                    rejectedButton(context),
-                    horizontalGap(defaultPadding),
-                    acceptButton(context)
-                  ],
-                ),
-                verticalGap(defaultPadding),
                 getWarrentyDetailsCard(context, warrantyModel),
-                getWarrantyCustomerDetailCard(context, warrantyModel?.customer),
-                getWarrantyStockistBusinessCard(
-                    context, warrantyModel?.stockists),
-                getWarrantyStockistBusinessDetailCard(
-                    context, warrantyModel?.stockists),
+                getWarrantyCustomerDetailCard(context, warrantyModel),
+                getWarrantyStockistBusinessCard(context, warrantyModel),
+                getRequestQuestions(context, warrantyModel),
+                verticalGap(defaultPadding),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: rejectReasonCtrl,
+                    maxLines: 3,
+                    decoration: const InputDecoration(
+                      hintText: 'Rejection reason',
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: primaryColor),
+                      ),
+                    ),
+                  ),
+                ),
+                verticalGap(defaultPadding / 2),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      rejectedButton(context),
+                      horizontalGap(defaultPadding),
+                      acceptButton(context)
+                    ],
+                  ),
+                ),
               ],
             ),
-            desktop: Column(
+            desktop: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                Expanded(
+                    child: Column(
                   children: [
-                    rejectedButton(context),
-                    horizontalGap(defaultPadding),
-                    acceptButton(context)
+                    getWarrentyDetailsCard(context, warrantyModel),
+                    getWarrantyCustomerDetailCard(context, warrantyModel),
                   ],
-                ),
-                verticalGap(defaultPadding),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: getWarrentyDetailsCard(context, warrantyModel),
-                    ),
-                    Expanded(
-                      child: getWarrantyCustomerDetailCard(
-                          context, warrantyModel?.customer),
-                    )
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: getWarrantyStockistBusinessCard(
-                          context, warrantyModel?.stockists),
-                    ),
-                    Expanded(
-                      child: getWarrantyStockistBusinessDetailCard(
-                          context, warrantyModel?.stockists),
-                    )
-                  ],
+                )),
+                Expanded(
+                  child: Column(
+                    children: [
+                      getWarrantyStockistBusinessCard(context, warrantyModel),
+                      getRequestQuestions(context, warrantyModel),
+                      verticalGap(defaultPadding),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: rejectReasonCtrl,
+                          maxLines: 3,
+                          decoration: const InputDecoration(
+                            hintText: 'Rejection reason',
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color: primaryColor),
+                            ),
+                          ),
+                        ),
+                      ),
+                      verticalGap(defaultPadding / 2),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            rejectedButton(context),
+                            horizontalGap(defaultPadding),
+                            acceptButton(context)
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -134,9 +159,8 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
         backgroundColor: Colors.green, // Background color
       ),
       onPressed: () async {
-        _api.updateWarrantyRequest(
-            {'allocationStatus': AllocationStatus.APPROVED.name},
-            warrantyModel?.warrantySerialNo ?? '').then((value) {
+        _api.updateWarrantyRequest({'status': AllocationStatus.APPROVED.name},
+            warrantyModel?.requestId?.toString() ?? '').then((value) {
           if (value) {
             ToastService.instance.showSuccess('Request approved');
           }
@@ -158,11 +182,17 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
         backgroundColor: Colors.red, // Background color
       ),
       onPressed: () {
-        _api.updateWarrantyRequest(
-            {'allocationStatus': AllocationStatus.DECLINED.name},
-            warrantyModel?.warrantySerialNo ?? '').then((value) {
+        if (rejectReasonCtrl.text.isEmpty) {
+          ToastService.instance.showError('Add rejection reason');
+          return;
+        }
+        _api.updateWarrantyRequest({
+          'status': AllocationStatus.DECLINED.name,
+          'rejectReason': rejectReasonCtrl.text
+        }, warrantyModel?.requestId?.toString() ?? '').then((value) {
           if (value) {
             ToastService.instance.showSuccess('Request rejected');
+            rejectReasonCtrl.text = '';
           }
         });
       },

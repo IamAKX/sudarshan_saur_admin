@@ -34,7 +34,6 @@ class _CustomerDetailState extends State<CustomerDetail> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => reloadScreen(),

@@ -11,6 +11,7 @@ import 'package:saur_admin/model/list/list_dealer_model.dart';
 import 'package:saur_admin/model/list/list_warranty_model.dart';
 import 'package:saur_admin/model/stockist_model.dart';
 import 'package:saur_admin/model/warranty_model.dart';
+import 'package:saur_admin/model/warranty_request_model.dart';
 import 'package:saur_admin/services/toast_service.dart';
 import 'package:saur_admin/utils/enum.dart';
 
@@ -173,6 +174,7 @@ class ApiProvider extends ChangeNotifier {
     status = ApiStatus.loading;
     notifyListeners();
     ListCustomerModel? list;
+    log(Api.customer);
     try {
       Response response = await _dio.get(
         Api.customer,
@@ -345,13 +347,13 @@ class ApiProvider extends ChangeNotifier {
     return warrantyModel;
   }
 
-  Future<WarrantyModel?> getWarrantyRequestBySerial(String serialNumber) async {
+  Future<WarrantyRequestModel?> getWarrantyRequestById(String id) async {
     status = ApiStatus.loading;
     notifyListeners();
-    WarrantyModel? warrantyModel;
+    WarrantyRequestModel? warrantyModel;
     try {
       Response response = await _dio.get(
-        '${Api.requestWarranty}/$serialNumber',
+        '${Api.requestWarranty}/$id',
         options: Options(
           contentType: 'application/json',
           responseType: ResponseType.json,
@@ -359,7 +361,7 @@ class ApiProvider extends ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
-        warrantyModel = WarrantyModel.fromMap(response.data['data']);
+        warrantyModel = WarrantyRequestModel.fromMap(response.data['data']);
         status = ApiStatus.success;
         notifyListeners();
         return warrantyModel;
@@ -420,6 +422,7 @@ class ApiProvider extends ChangeNotifier {
   Future<bool> checkAdminPhone(String phone) async {
     status = ApiStatus.loading;
     notifyListeners();
+    log('${Api.admin}/$phone');
     try {
       Response response = await _dio.get(
         '${Api.admin}/$phone',
@@ -428,6 +431,7 @@ class ApiProvider extends ChangeNotifier {
           responseType: ResponseType.json,
         ),
       );
+      log(response.data);
       if (response.statusCode == 200) {
         status = ApiStatus.success;
         notifyListeners();
@@ -453,6 +457,7 @@ class ApiProvider extends ChangeNotifier {
   Future<bool> sendOtp(String phone, String otp) async {
     status = ApiStatus.loading;
     notifyListeners();
+    debugPrint(Api.buildOtpUrl(phone, otp));
     try {
       Response response = await _dio.get(
         Api.buildOtpUrl(phone, otp),
@@ -461,6 +466,7 @@ class ApiProvider extends ChangeNotifier {
           responseType: ResponseType.json,
         ),
       );
+      log(response.data.toString());
       if (response.statusCode == 200) {
         ToastService.instance.showSuccess('OTP sent');
         status = ApiStatus.success;

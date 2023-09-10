@@ -68,19 +68,20 @@ class _SerialNumberScreenState extends State<SerialNumberScreen> {
       setState(() {
         list.clear();
         value?.data?.forEach((e) {
+          debugPrint(e.toString());
           var map = {
-            'warrantySerialNo': e.warrantySerialNo,
-            'customerId': e.customer?.customerId,
-            'customerName': e.customer?.customerName,
-            'stockistId': e.stockists?.stockistId,
-            'stockistName': e.stockists?.stockistName,
+            'warrantySerialNo': e.warrantyDetails?.warrantySerialNo,
+            'customerId': e.customers?.customerId,
+            'customerName': e.customers?.customerName,
+            'custPhone': e.customers?.mobileNo,
             'initUserType': e.initUserType,
             'createdOn': DateTimeFormatter.onlyDateLong(e.createdOn ?? ''),
-            'allocationStatus': e.allocationStatus ?? '',
-            'view': e.warrantySerialNo.toString(),
+            'allocationStatus': e.status ?? '',
+            'view': e.requestId.toString(),
           };
           list.add(map);
         });
+        debugPrint(list.toString());
       });
     });
   }
@@ -131,13 +132,8 @@ class _SerialNumberScreenState extends State<SerialNumberScreen> {
                     sortable: true,
                   ),
                   WebDataColumn(
-                    name: 'stockistId',
-                    label: const Text('Stockist Id'),
-                    dataCell: (value) => DataCell(Text('$value')),
-                  ),
-                  WebDataColumn(
-                    name: 'stockistName',
-                    label: const Text('Stockist Name'),
+                    name: 'custPhone',
+                    label: const Text('Cust Phone'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(

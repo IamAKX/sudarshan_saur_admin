@@ -12,28 +12,22 @@ class CustomerModel {
   String? mobileNo;
   String? status;
   String? email;
+  AddressModel? installationAddress;
   AddressModel? address;
-  String? createdOn;
-  String? updatedOn;
   String? lastLogin;
+  String? createdOn;
   String? image;
-  String? lastPurchaseDate;
-  String? password;
-  List<WarrantyModel>? warrantyDetails;
   CustomerModel({
     this.customerId,
     this.customerName,
     this.mobileNo,
     this.status,
     this.email,
+    this.installationAddress,
     this.address,
-    this.createdOn,
-    this.updatedOn,
     this.lastLogin,
+    this.createdOn,
     this.image,
-    this.lastPurchaseDate,
-    this.password,
-    this.warrantyDetails,
   });
 
   CustomerModel copyWith({
@@ -42,14 +36,11 @@ class CustomerModel {
     String? mobileNo,
     String? status,
     String? email,
+    AddressModel? installationAddress,
     AddressModel? address,
-    String? createdOn,
-    String? updatedOn,
     String? lastLogin,
+    String? createdOn,
     String? image,
-    String? lastPurchaseDate,
-    String? password,
-    List<WarrantyModel>? warrantyDetails,
   }) {
     return CustomerModel(
       customerId: customerId ?? this.customerId,
@@ -57,14 +48,11 @@ class CustomerModel {
       mobileNo: mobileNo ?? this.mobileNo,
       status: status ?? this.status,
       email: email ?? this.email,
+      installationAddress: installationAddress ?? this.installationAddress,
       address: address ?? this.address,
-      createdOn: createdOn ?? this.createdOn,
-      updatedOn: updatedOn ?? this.updatedOn,
       lastLogin: lastLogin ?? this.lastLogin,
+      createdOn: createdOn ?? this.createdOn,
       image: image ?? this.image,
-      lastPurchaseDate: lastPurchaseDate ?? this.lastPurchaseDate,
-      password: password ?? this.password,
-      warrantyDetails: warrantyDetails ?? this.warrantyDetails,
     );
   }
 
@@ -75,14 +63,11 @@ class CustomerModel {
       'mobileNo': mobileNo,
       'status': status,
       'email': email,
+      'installationAddress': installationAddress?.toMap(),
       'address': address?.toMap(),
-      'createdOn': createdOn,
-      'updatedOn': updatedOn,
       'lastLogin': lastLogin,
+      'createdOn': createdOn,
       'image': image,
-      'lastPurchaseDate': lastPurchaseDate,
-      'password': password,
-      'warrantyDetails': warrantyDetails?.map((x) => x?.toMap())?.toList(),
     };
   }
 
@@ -93,18 +78,14 @@ class CustomerModel {
       mobileNo: map['mobileNo'],
       status: map['status'],
       email: map['email'],
+      installationAddress: map['installationAddress'] != null
+          ? AddressModel.fromMap(map['installationAddress'])
+          : null,
       address:
           map['address'] != null ? AddressModel.fromMap(map['address']) : null,
-      createdOn: map['createdOn'],
-      updatedOn: map['updatedOn'],
       lastLogin: map['lastLogin'],
+      createdOn: map['createdOn'],
       image: map['image'],
-      lastPurchaseDate: map['lastPurchaseDate'],
-      password: map['password'],
-      warrantyDetails: map['warrantyDetails'] != null
-          ? List<WarrantyModel>.from(
-              map['warrantyDetails']?.map((x) => WarrantyModel.fromMap(x)))
-          : null,
     );
   }
 
@@ -115,7 +96,7 @@ class CustomerModel {
 
   @override
   String toString() {
-    return 'CustomerModel(customerId: $customerId, customerName: $customerName, mobileNo: $mobileNo, status: $status, email: $email, address: $address, createdOn: $createdOn, updatedOn: $updatedOn, lastLogin: $lastLogin, image: $image, lastPurchaseDate: $lastPurchaseDate, password: $password, warrantyDetails: $warrantyDetails)';
+    return 'CustomerModel(customerId: $customerId, customerName: $customerName, mobileNo: $mobileNo, status: $status, email: $email, installationAddress: $installationAddress, address: $address, lastLogin: $lastLogin, createdOn: $createdOn, image: $image)';
   }
 
   @override
@@ -128,14 +109,11 @@ class CustomerModel {
         other.mobileNo == mobileNo &&
         other.status == status &&
         other.email == email &&
+        other.installationAddress == installationAddress &&
         other.address == address &&
-        other.createdOn == createdOn &&
-        other.updatedOn == updatedOn &&
         other.lastLogin == lastLogin &&
-        other.image == image &&
-        other.lastPurchaseDate == lastPurchaseDate &&
-        other.password == password &&
-        listEquals(other.warrantyDetails, warrantyDetails);
+        other.createdOn == createdOn &&
+        other.image == image;
   }
 
   @override
@@ -145,13 +123,10 @@ class CustomerModel {
         mobileNo.hashCode ^
         status.hashCode ^
         email.hashCode ^
+        installationAddress.hashCode ^
         address.hashCode ^
-        createdOn.hashCode ^
-        updatedOn.hashCode ^
         lastLogin.hashCode ^
-        image.hashCode ^
-        lastPurchaseDate.hashCode ^
-        password.hashCode ^
-        warrantyDetails.hashCode;
+        createdOn.hashCode ^
+        image.hashCode;
   }
 }

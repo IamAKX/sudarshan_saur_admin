@@ -166,6 +166,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             } else {
                               ToastService.instance.showError('Invalid OTP');
                             }
+                            // Navigator.pushNamedAndRemoveUntil(context,
+                            //     HomeContainer.routePath, (route) => false);
                           },
                           label: 'Login',
                           isDisabled: false,

@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:saur_admin/model/stockist_model.dart';
 import 'package:saur_admin/model/warranty_model.dart';
 
 import '../../model/customer_model.dart';
+import '../../model/warranty_request_model.dart';
 import '../../utils/colors.dart';
 import '../../utils/enum.dart';
 import '../../utils/helper_methods.dart';
@@ -11,100 +13,123 @@ import '../../widgets/date_time_formatter.dart';
 import '../../widgets/gaps.dart';
 
 Card getWarrentyDetailsCard(
-    BuildContext context, WarrantyModel? warrantyModel) {
+    BuildContext context, WarrantyRequestModel? warrantyModel) {
   return Card(
     color: Colors.white,
     child: Container(
       width: double.infinity,
       padding: const EdgeInsets.all(defaultPadding),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Text(
-            'Warranty Detail',
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(color: primaryColor),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Serial Number',
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          Text(
-            warrantyModel?.warrantySerialNo ?? '-',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Guarantee Detail',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(color: primaryColor),
                 ),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Invoice',
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          Text(
-            warrantyModel?.invoiceNo ?? '-',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
+                verticalGap(defaultPadding),
+                Text(
+                  'Serial Number',
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Installed On',
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          Text(
-            DateTimeFormatter.onlyDateShort(
-                warrantyModel?.installationDate ?? ''),
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
+                Text(
+                  warrantyModel?.warrantyDetails?.warrantySerialNo ?? '-',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
                 ),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'System info',
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          Text(
-            '${warrantyModel?.lpd ?? ''} ${warrantyModel?.model ?? ''} ${warrantyModel?.itemDescription ?? ''}',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
+                verticalGap(defaultPadding / 2),
+                Text(
+                  'Invoice',
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Guarantee',
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          Text(
-            warrantyModel?.guaranteePeriod ?? '',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
+                Text(
+                  warrantyModel?.invoiceNumber ?? '-',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
                 ),
-          ),
-          Text(
-            'Place',
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          Text(
-            warrantyModel?.state ?? '',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
+                verticalGap(defaultPadding / 2),
+                Text(
+                  'Installed On',
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
+                Text(
+                  warrantyModel?.installationDate ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+                verticalGap(defaultPadding / 2),
+                Text(
+                  'System capacity',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                Text(
+                  warrantyModel?.warrantyDetails?.lpd ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+                verticalGap(defaultPadding / 2),
+                Text(
+                  'Model',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                Text(
+                  warrantyModel?.warrantyDetails?.model ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+                verticalGap(defaultPadding / 2),
+                Text(
+                  'Guarantee',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                Text(
+                  warrantyModel?.warrantyDetails?.guaranteePeriod ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+              ],
+            ),
           ),
+          Expanded(
+            child: Column(
+              children: [
+                Text(
+                  'Serial Number',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+                verticalGap(defaultPadding / 2),
+                CachedNetworkImage(
+                  imageUrl: warrantyModel?.images?.imgSystemSerialNo ?? '',
+                  fit: BoxFit.fitWidth,
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Center(
+                    child: Text('Image not loaded'),
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     ),
@@ -112,86 +137,203 @@ Card getWarrentyDetailsCard(
 }
 
 Card getWarrantyStockistBusinessCard(
-    BuildContext context, StockistModel? stockistModel) {
+    BuildContext context, WarrantyRequestModel? warrantyRequestModel) {
   return Card(
     color: Colors.white,
     child: Container(
       width: double.infinity,
       padding: const EdgeInsets.all(defaultPadding),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Text(
-            'Stockist Business Detail',
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(color: primaryColor),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Stockist ID',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            '${stockistModel?.stockistId ?? ''}',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Stockist Detail',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(color: primaryColor),
                 ),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Business Name',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            stockistModel?.businessName ?? '',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
+                verticalGap(defaultPadding),
+                Text(
+                  'Stockist Name',
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Business Address',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            '${stockistModel?.businessAddress}',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
+                Text(
+                  warrantyRequestModel?.warrantyDetails?.crmStockistName ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
                 ),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'GST Number',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            '${stockistModel?.gstNumber}',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
+                verticalGap(defaultPadding / 2),
+                Text(
+                  'Stockist Phone No',
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Verified Dealer',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            stockistModel?.status == UserStatus.ACTIVE.name ? 'Yes' : 'No',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
+                Text(
+                  warrantyRequestModel?.warrantyDetails?.crmStockistMobileNo ??
+                      '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
                 ),
+                verticalGap(defaultPadding / 2),
+                Text(
+                  'Stockist Email',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  warrantyRequestModel?.warrantyDetails?.crmStockistMobileNo ??
+                      '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+                verticalGap(defaultPadding),
+                Text(
+                  'Dealer Detail',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(color: primaryColor),
+                ),
+                verticalGap(defaultPadding),
+                Text(
+                  'Dealer Name',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  warrantyRequestModel?.dealerInfo?.name ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+                verticalGap(defaultPadding / 2),
+                Text(
+                  'Dealer Mobile',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  warrantyRequestModel?.dealerInfo?.mobile ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+                verticalGap(defaultPadding / 2),
+                Text(
+                  'Dealer Place',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  warrantyRequestModel?.dealerInfo?.place ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  'Technician Detail',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(color: primaryColor),
+                ),
+                verticalGap(defaultPadding),
+                Text(
+                  'Technician Name',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  warrantyRequestModel?.technicianInfo?.name ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+                verticalGap(defaultPadding / 2),
+                Text(
+                  'Technician Mobile',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  warrantyRequestModel?.technicianInfo?.mobile ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+                verticalGap(defaultPadding / 2),
+                Text(
+                  'Technician Place',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  warrantyRequestModel?.technicianInfo?.place ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+                verticalGap(defaultPadding),
+                Text(
+                  'Plumber Detail',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(color: primaryColor),
+                ),
+                verticalGap(defaultPadding),
+                Text(
+                  'Plumber Name',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  warrantyRequestModel?.plumberInfo?.name ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+                verticalGap(defaultPadding / 2),
+                Text(
+                  'Plumber Mobile',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  warrantyRequestModel?.plumberInfo?.mobile ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+                verticalGap(defaultPadding / 2),
+                Text(
+                  'Plumber Place',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  warrantyRequestModel?.plumberInfo?.place ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -199,191 +341,178 @@ Card getWarrantyStockistBusinessCard(
   );
 }
 
-Card getWarrantyStockistBusinessDetailCard(
-    BuildContext context, StockistModel? stockistModel) {
+Card getRequestQuestions(
+    BuildContext context, WarrantyRequestModel? warrantyRequestModel) {
   return Card(
     color: Colors.white,
     child: Container(
       width: double.infinity,
       padding: const EdgeInsets.all(defaultPadding),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'Stockist Detail',
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(color: primaryColor),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Stockist Id',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            '${stockistModel?.stockistId}',
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(color: primaryColor),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Onbarding date',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            DateTimeFormatter.onlyDateShort(stockistModel?.createdOn ?? ''),
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Last logged in',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            DateTimeFormatter.onlyDateShortWithTime(stockistModel?.lastLogin ?? ''),
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Phone',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            '${stockistModel?.mobileNo}',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Email',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            '${stockistModel?.email}',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Personal Address',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            prepareAddress(stockistModel?.address),
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-        ],
-      ),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Other Information',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge
+                  ?.copyWith(color: primaryColor),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: warrantyRequestModel?.answers
+                      ?.map(
+                        (e) => RichText(
+                          text: TextSpan(
+                            text: e.questions?.questionText ?? '',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall
+                                ?.copyWith(
+                                  color: textColorDark,
+                                  height: 1.8,
+                                ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: '\t${e.answerText}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(
+                                      color: textColorDark,
+                                      height: 1.8,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                      .toList() ??
+                  [],
+            )
+          ]),
     ),
   );
 }
 
 Card getWarrantyCustomerDetailCard(
-    BuildContext context, CustomerModel? customerModel) {
+    BuildContext context, WarrantyRequestModel? warrantyRequestModel) {
   return Card(
     color: Colors.white,
     child: Container(
       width: double.infinity,
       padding: const EdgeInsets.all(defaultPadding),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'Customer detail',
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(color: primaryColor),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Address',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            prepareAddress(customerModel?.address),
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Customer detail',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(color: primaryColor),
                 ),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Onbarding date',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            DateTimeFormatter.onlyDateShort(customerModel?.createdOn ?? ''),
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
+                verticalGap(defaultPadding),
+                Text(
+                  'Name',
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Last logged in',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            DateTimeFormatter.onlyDateShortWithTime(customerModel?.lastLogin ?? ''),
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
+                Text(
+                  warrantyRequestModel?.customers?.customerName ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
                 ),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Last Purchased on',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            DateTimeFormatter.onlyDateShort(
-                customerModel?.lastPurchaseDate ?? ''),
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
+                verticalGap(defaultPadding),
+                Text(
+                  'Address',
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-          ),
-          verticalGap(defaultPadding),
-          Text(
-            'Dealer',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            '-',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
+                Text(
+                  prepareAddress(warrantyRequestModel?.installationAddress),
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                      ),
                 ),
+                verticalGap(defaultPadding),
+                Text(
+                  'Onbarding date',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  DateTimeFormatter.onlyDateShort(
+                      warrantyRequestModel?.customers?.createdOn ?? ''),
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+                verticalGap(defaultPadding),
+                Text(
+                  'Last logged in',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  DateTimeFormatter.onlyDateShortWithTime(
+                      warrantyRequestModel?.customers?.lastLogin ?? ''),
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+              ],
+            ),
           ),
+          Expanded(
+              child: Column(
+            children: [
+              Text(
+                'System Live Image',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: textColorDark,
+                      height: 1.8,
+                    ),
+              ),
+              verticalGap(defaultPadding / 2),
+              CachedNetworkImage(
+                imageUrl: warrantyRequestModel?.images?.imgLiveSystem ?? '',
+                fit: BoxFit.fitWidth,
+                height: 250,
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Center(
+                  child: Text('Image not loaded'),
+                ),
+              ),
+              verticalGap(defaultPadding),
+              Text(
+                'Aadhaar Image',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: textColorDark,
+                      height: 1.8,
+                    ),
+              ),
+              verticalGap(defaultPadding / 2),
+              CachedNetworkImage(
+                imageUrl: warrantyRequestModel?.images?.imgAadhar ?? '',
+                fit: BoxFit.fitWidth,
+                height: 250,
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Center(
+                  child: Text('Image not loaded'),
+                ),
+              ),
+            ],
+          ))
         ],
       ),
     ),
