@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:saur_admin/model/stockist_model.dart';
 import 'package:saur_admin/model/warranty_model.dart';
+import 'dart:html' as html;
 
 import '../../model/customer_model.dart';
 import '../../model/warranty_request_model.dart';
@@ -187,8 +188,7 @@ Card getWarrantyStockistBusinessCard(
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Text(
-                  warrantyRequestModel?.warrantyDetails?.crmStockistMobileNo ??
-                      '',
+                  warrantyRequestModel?.warrantyDetails?.crmStockistEmail ?? '',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: textColorDark,
                         height: 1.8,
@@ -468,6 +468,15 @@ Card getWarrantyCustomerDetailCard(
                         height: 1.8,
                       ),
                 ),
+                verticalGap(defaultPadding),
+                TextButton.icon(
+                    onPressed: () {
+                      html.window.open(
+                          'https://maps.google.com?q=${warrantyRequestModel?.lat},${warrantyRequestModel?.lon}',
+                          'new tab');
+                    },
+                    icon: Icon(Icons.location_pin),
+                    label: Text('Location'))
               ],
             ),
           ),

@@ -33,6 +33,8 @@ class WarrantyRequestModel {
   String? installationDate;
   String? invoiceDate;
   String? invoiceNumber;
+  String? lat;
+  String? lon;
   WarrantyRequestModel({
     this.customers,
     this.mobile2,
@@ -54,6 +56,8 @@ class WarrantyRequestModel {
     this.installationDate,
     this.invoiceDate,
     this.invoiceNumber,
+    this.lat,
+    this.lon,
   });
 
   WarrantyRequestModel copyWith({
@@ -77,6 +81,8 @@ class WarrantyRequestModel {
     String? installationDate,
     String? invoiceDate,
     String? invoiceNumber,
+    String? lat,
+    String? lon,
   }) {
     return WarrantyRequestModel(
       customers: customers ?? this.customers,
@@ -99,6 +105,8 @@ class WarrantyRequestModel {
       installationDate: installationDate ?? this.installationDate,
       invoiceDate: invoiceDate ?? this.invoiceDate,
       invoiceNumber: invoiceNumber ?? this.invoiceNumber,
+      lat: lat ?? this.lat,
+      lon: lon ?? this.lon,
     );
   }
 
@@ -124,21 +132,40 @@ class WarrantyRequestModel {
       'installationDate': installationDate,
       'invoiceDate': invoiceDate,
       'invoiceNumber': invoiceNumber,
+      'lat': lat,
+      'lon': lon,
     };
   }
 
   factory WarrantyRequestModel.fromMap(Map<String, dynamic> map) {
     return WarrantyRequestModel(
-      customers: map['customers'] != null ? CustomerModel.fromMap(map['customers']) : null,
+      customers: map['customers'] != null
+          ? CustomerModel.fromMap(map['customers'])
+          : null,
       mobile2: map['mobile2'],
       requestId: map['requestId']?.toInt(),
-      installationAddress: map['installationAddress'] != null ? AddressModel.fromMap(map['installationAddress']) : null,
-      ownerAddress: map['ownerAddress'] != null ? AddressModel.fromMap(map['ownerAddress']) : null,
-      warrantyDetails: map['warrantyDetails'] != null ? WarrantyModel.fromMap(map['warrantyDetails']) : null,
-      dealerInfo: map['dealerInfo'] != null ? CustDealerModel.fromMap(map['dealerInfo']) : null,
-      technicianInfo: map['technicianInfo'] != null ? TechnicianModel.fromMap(map['technicianInfo']) : null,
-      plumberInfo: map['plumberInfo'] != null ? PlumberModel.fromMap(map['plumberInfo']) : null,
-      answers: map['answers'] != null ? List<QuestionAnswerModel>.from(map['answers']?.map((x) => QuestionAnswerModel.fromMap(x))) : null,
+      installationAddress: map['installationAddress'] != null
+          ? AddressModel.fromMap(map['installationAddress'])
+          : null,
+      ownerAddress: map['ownerAddress'] != null
+          ? AddressModel.fromMap(map['ownerAddress'])
+          : null,
+      warrantyDetails: map['warrantyDetails'] != null
+          ? WarrantyModel.fromMap(map['warrantyDetails'])
+          : null,
+      dealerInfo: map['dealerInfo'] != null
+          ? CustDealerModel.fromMap(map['dealerInfo'])
+          : null,
+      technicianInfo: map['technicianInfo'] != null
+          ? TechnicianModel.fromMap(map['technicianInfo'])
+          : null,
+      plumberInfo: map['plumberInfo'] != null
+          ? PlumberModel.fromMap(map['plumberInfo'])
+          : null,
+      answers: map['answers'] != null
+          ? List<QuestionAnswerModel>.from(
+              map['answers']?.map((x) => QuestionAnswerModel.fromMap(x)))
+          : null,
       status: map['status'],
       images: map['images'] != null ? ImagesModel.fromMap(map['images']) : null,
       createdOn: map['createdOn'],
@@ -149,66 +176,73 @@ class WarrantyRequestModel {
       installationDate: map['installationDate'],
       invoiceDate: map['invoiceDate'],
       invoiceNumber: map['invoiceNumber'],
+      lat: map['lat'],
+      lon: map['lon'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory WarrantyRequestModel.fromJson(String source) => WarrantyRequestModel.fromMap(json.decode(source));
+  factory WarrantyRequestModel.fromJson(String source) =>
+      WarrantyRequestModel.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'WarrantyRequestModel(customers: $customers, mobile2: $mobile2, requestId: $requestId, installationAddress: $installationAddress, ownerAddress: $ownerAddress, warrantyDetails: $warrantyDetails, dealerInfo: $dealerInfo, technicianInfo: $technicianInfo, plumberInfo: $plumberInfo, answers: $answers, status: $status, images: $images, createdOn: $createdOn, updatedOn: $updatedOn, initUserType: $initUserType, initiatedBy: $initiatedBy, approvedBy: $approvedBy, installationDate: $installationDate, invoiceDate: $invoiceDate, invoiceNumber: $invoiceNumber)';
+    return 'WarrantyRequestModel(customers: $customers, mobile2: $mobile2, requestId: $requestId, installationAddress: $installationAddress, ownerAddress: $ownerAddress, warrantyDetails: $warrantyDetails, dealerInfo: $dealerInfo, technicianInfo: $technicianInfo, plumberInfo: $plumberInfo, answers: $answers, status: $status, images: $images, createdOn: $createdOn, updatedOn: $updatedOn, initUserType: $initUserType, initiatedBy: $initiatedBy, approvedBy: $approvedBy, installationDate: $installationDate, invoiceDate: $invoiceDate, invoiceNumber: $invoiceNumber, lat: $lat, lon: $lon)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is WarrantyRequestModel &&
-      other.customers == customers &&
-      other.mobile2 == mobile2 &&
-      other.requestId == requestId &&
-      other.installationAddress == installationAddress &&
-      other.ownerAddress == ownerAddress &&
-      other.warrantyDetails == warrantyDetails &&
-      other.dealerInfo == dealerInfo &&
-      other.technicianInfo == technicianInfo &&
-      other.plumberInfo == plumberInfo &&
-      listEquals(other.answers, answers) &&
-      other.status == status &&
-      other.images == images &&
-      other.createdOn == createdOn &&
-      other.updatedOn == updatedOn &&
-      other.initUserType == initUserType &&
-      other.initiatedBy == initiatedBy &&
-      other.approvedBy == approvedBy &&
-      other.installationDate == installationDate &&
-      other.invoiceDate == invoiceDate &&
-      other.invoiceNumber == invoiceNumber;
+        other.customers == customers &&
+        other.mobile2 == mobile2 &&
+        other.requestId == requestId &&
+        other.installationAddress == installationAddress &&
+        other.ownerAddress == ownerAddress &&
+        other.warrantyDetails == warrantyDetails &&
+        other.dealerInfo == dealerInfo &&
+        other.technicianInfo == technicianInfo &&
+        other.plumberInfo == plumberInfo &&
+        listEquals(other.answers, answers) &&
+        other.status == status &&
+        other.images == images &&
+        other.createdOn == createdOn &&
+        other.updatedOn == updatedOn &&
+        other.initUserType == initUserType &&
+        other.initiatedBy == initiatedBy &&
+        other.approvedBy == approvedBy &&
+        other.installationDate == installationDate &&
+        other.invoiceDate == invoiceDate &&
+        other.invoiceNumber == invoiceNumber &&
+        other.lat == lat &&
+        other.lon == lon;
   }
 
   @override
   int get hashCode {
     return customers.hashCode ^
-      mobile2.hashCode ^
-      requestId.hashCode ^
-      installationAddress.hashCode ^
-      ownerAddress.hashCode ^
-      warrantyDetails.hashCode ^
-      dealerInfo.hashCode ^
-      technicianInfo.hashCode ^
-      plumberInfo.hashCode ^
-      answers.hashCode ^
-      status.hashCode ^
-      images.hashCode ^
-      createdOn.hashCode ^
-      updatedOn.hashCode ^
-      initUserType.hashCode ^
-      initiatedBy.hashCode ^
-      approvedBy.hashCode ^
-      installationDate.hashCode ^
-      invoiceDate.hashCode ^
-      invoiceNumber.hashCode;
+        mobile2.hashCode ^
+        requestId.hashCode ^
+        installationAddress.hashCode ^
+        ownerAddress.hashCode ^
+        warrantyDetails.hashCode ^
+        dealerInfo.hashCode ^
+        technicianInfo.hashCode ^
+        plumberInfo.hashCode ^
+        answers.hashCode ^
+        status.hashCode ^
+        images.hashCode ^
+        createdOn.hashCode ^
+        updatedOn.hashCode ^
+        initUserType.hashCode ^
+        initiatedBy.hashCode ^
+        approvedBy.hashCode ^
+        installationDate.hashCode ^
+        invoiceDate.hashCode ^
+        invoiceNumber.hashCode ^
+        lat.hashCode ^
+        lon.hashCode;
   }
 }
