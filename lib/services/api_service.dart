@@ -462,9 +462,15 @@ class ApiProvider extends ChangeNotifier {
       Response response = await _dio.get(
         Api.buildOtpUrl(phone, otp),
         options: Options(
-          contentType: 'application/json',
-          responseType: ResponseType.json,
-        ),
+            contentType: 'application/json',
+            responseType: ResponseType.json,
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods':
+                  'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+              'Access-Control-Allow-Headers':
+                  'Origin, Content-Type, X-Auth-Token',
+            }),
       );
       log(response.data.toString());
       if (response.statusCode == 200) {
