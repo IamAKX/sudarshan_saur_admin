@@ -1,6 +1,7 @@
 class Api {
-  static const String baseUrl = 'http://icrmonline.in:8084';
+  // static const String baseUrl = 'http://icrmonline.in:8084';
   // static const String baseUrl = 'http://localhost:8084';
+  static const String baseUrl = 'https://13.51.238.100:8084';
 
   static const String login = '$baseUrl/saur/customers/authenticate';
 
