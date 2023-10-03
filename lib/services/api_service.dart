@@ -431,7 +431,7 @@ class ApiProvider extends ChangeNotifier {
           responseType: ResponseType.json,
         ),
       );
-      log(response.data);
+
       if (response.statusCode == 200) {
         status = ApiStatus.success;
         notifyListeners();
