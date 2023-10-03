@@ -1,17 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:saur_admin/model/stockist_model.dart';
-import 'package:saur_admin/model/warranty_model.dart';
 import 'dart:html' as html;
 
-import '../../model/customer_model.dart';
 import '../../model/warranty_request_model.dart';
 import '../../utils/colors.dart';
-import '../../utils/enum.dart';
 import '../../utils/helper_methods.dart';
 import '../../utils/theme.dart';
 import '../../widgets/date_time_formatter.dart';
 import '../../widgets/gaps.dart';
+import 'dart:js' as js;
 
 Card getWarrentyDetailsCard(
     BuildContext context, WarrantyRequestModel? warrantyModel) {
@@ -71,6 +68,19 @@ Card getWarrentyDetailsCard(
                 ),
                 verticalGap(defaultPadding / 2),
                 Text(
+                  'Company Invoice Detail',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                Text(
+                  DateTimeFormatter.onlyDateShort(
+                      warrantyModel?.warrantyDetails?.installationDate ?? ''),
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+                verticalGap(defaultPadding / 2),
+                Text(
                   'System capacity',
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
@@ -119,13 +129,19 @@ Card getWarrentyDetailsCard(
                       ),
                 ),
                 verticalGap(defaultPadding / 2),
-                CachedNetworkImage(
-                  imageUrl: warrantyModel?.images?.imgSystemSerialNo ?? '',
-                  fit: BoxFit.fitWidth,
-                  placeholder: (context, url) =>
-                      const CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => const Center(
-                    child: Text('Image not loaded'),
+                InkWell(
+                  onTap: () {
+                    js.context.callMethod('open',
+                        [warrantyModel?.images?.imgSystemSerialNo ?? '']);
+                  },
+                  child: CachedNetworkImage(
+                    imageUrl: warrantyModel?.images?.imgSystemSerialNo ?? '',
+                    fit: BoxFit.fitWidth,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => const Center(
+                      child: Text('Image not loaded'),
+                    ),
                   ),
                 ),
               ],
@@ -184,11 +200,12 @@ Card getWarrantyStockistBusinessCard(
                 ),
                 verticalGap(defaultPadding / 2),
                 Text(
-                  'Stockist Email',
+                  'Stockist District',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Text(
-                  warrantyRequestModel?.warrantyDetails?.crmStockistEmail ?? '',
+                  warrantyRequestModel?.warrantyDetails?.crmStockistDistrict ??
+                      '',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: textColorDark,
                         height: 1.8,
@@ -457,6 +474,30 @@ Card getWarrantyCustomerDetailCard(
                 ),
                 verticalGap(defaultPadding),
                 Text(
+                  'Mobile Number 1',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  warrantyRequestModel?.customers?.mobileNo ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+                verticalGap(defaultPadding),
+                Text(
+                  'Mobile Number 2',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  warrantyRequestModel?.mobile2 ?? '',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                        height: 1.8,
+                      ),
+                ),
+                verticalGap(defaultPadding),
+                Text(
                   'Last logged in',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
@@ -491,14 +532,21 @@ Card getWarrantyCustomerDetailCard(
                     ),
               ),
               verticalGap(defaultPadding / 2),
-              CachedNetworkImage(
-                imageUrl: warrantyRequestModel?.images?.imgLiveSystem ?? '',
-                fit: BoxFit.fitWidth,
-                height: 250,
-                placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Center(
-                  child: Text('Image not loaded'),
+              InkWell(
+                onTap: () {
+                  js.context.callMethod('open', [
+                    warrantyRequestModel?.images?.imgLiveSystem ?? '',
+                  ]);
+                },
+                child: CachedNetworkImage(
+                  imageUrl: warrantyRequestModel?.images?.imgLiveSystem ?? '',
+                  fit: BoxFit.fitWidth,
+                  height: 250,
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Center(
+                    child: Text('Image not loaded'),
+                  ),
                 ),
               ),
               verticalGap(defaultPadding),
@@ -510,14 +558,20 @@ Card getWarrantyCustomerDetailCard(
                     ),
               ),
               verticalGap(defaultPadding / 2),
-              CachedNetworkImage(
-                imageUrl: warrantyRequestModel?.images?.imgAadhar ?? '',
-                fit: BoxFit.fitWidth,
-                height: 250,
-                placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Center(
-                  child: Text('Image not loaded'),
+              InkWell(
+                onTap: () {
+                  js.context.callMethod(
+                      'open', [warrantyRequestModel?.images?.imgAadhar ?? '']);
+                },
+                child: CachedNetworkImage(
+                  imageUrl: warrantyRequestModel?.images?.imgAadhar ?? '',
+                  fit: BoxFit.fitWidth,
+                  height: 250,
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Center(
+                    child: Text('Image not loaded'),
+                  ),
                 ),
               ),
             ],

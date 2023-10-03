@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saur_admin/model/stockist_model.dart';
-import 'package:saur_admin/screen/customer/customer_detail_body.dart';
 import 'package:saur_admin/screen/customer/customer_detail_header.dart';
-import 'package:saur_admin/screen/dealer/dealer_detail_body.dart';
 import 'package:saur_admin/screen/stockist/stockist_detail_body.dart';
 import 'package:saur_admin/utils/responsive.dart';
 
-import '../../model/dealer_model.dart';
 import '../../services/api_service.dart';
 import '../../utils/enum.dart';
 import '../../utils/theme.dart';
@@ -53,7 +50,11 @@ class _StockistDetailState extends State<StockistDetail> {
   @override
   Widget build(BuildContext context) {
     _api = Provider.of<ApiProvider>(context);
-
+    if (_api.status == ApiStatus.loading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return SingleChildScrollView(
       padding: const EdgeInsets.all(defaultPadding),
       child: Column(

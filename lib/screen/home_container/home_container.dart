@@ -24,7 +24,7 @@ class HomeContainer extends StatefulWidget {
 }
 
 class _HomeContainerState extends State<HomeContainer> {
-  int selectedIndex = 1;
+  int selectedIndex = 5;
 
   navigateMenu(int index) {
     setState(() {

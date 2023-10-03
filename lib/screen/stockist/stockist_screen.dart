@@ -69,18 +69,18 @@ class _StockistScreenState extends State<StockistScreen> {
     await _api.getAllStockist().then((value) {
       setState(() {
         list.clear();
-
+        log(value?.data?.length.toString() ?? 'no length');
         value?.data?.forEach((e) {
           var map = {
-            'stockistId': e.stockistId,
-            'stockistName': e.stockistName,
-            'businessName': e.businessName,
-            'mobileNo': e.mobileNo,
+            'stockistId': e.stockistId ?? '',
+            'stockistName': e.stockistName ?? '',
+            'businessName': e.businessName ?? '',
+            'mobileNo': e.mobileNo ?? '',
             'createdOn': DateTimeFormatter.onlyDateLong(e.createdOn ?? ''),
-            'status': e.status,
-            'view': e.stockistId.toString(),
+            'status': e.status ?? '',
+            'view': e.stockistId.toString() ?? '',
             'isActive': {
-              'id': e.stockistId,
+              'id': e.stockistId ?? '',
               'status': (e.status ?? UserStatus.BLOCKED.name) == 'ACTIVE',
             },
           };
@@ -101,6 +101,11 @@ class _StockistScreenState extends State<StockistScreen> {
   @override
   Widget build(BuildContext context) {
     _api = Provider.of<ApiProvider>(context);
+    if (_api.status == ApiStatus.loading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return SingleChildScrollView(
       padding: const EdgeInsets.all(defaultPadding),
       child: Column(

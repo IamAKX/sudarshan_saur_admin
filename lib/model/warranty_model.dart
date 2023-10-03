@@ -32,6 +32,7 @@ class WarrantyModel {
   String? initiatedBy;
   String? approvedBy;
   String? lpd;
+  String? crmStockistDistrict;
   WarrantyModel({
     this.warrantySerialNo,
     this.crmCustomerName,
@@ -60,6 +61,7 @@ class WarrantyModel {
     this.initiatedBy,
     this.approvedBy,
     this.lpd,
+    this.crmStockistDistrict,
   });
 
   WarrantyModel copyWith({
@@ -90,6 +92,7 @@ class WarrantyModel {
     String? initiatedBy,
     String? approvedBy,
     String? lpd,
+    String? crmStockistDistrict,
   }) {
     return WarrantyModel(
       warrantySerialNo: warrantySerialNo ?? this.warrantySerialNo,
@@ -119,6 +122,7 @@ class WarrantyModel {
       initiatedBy: initiatedBy ?? this.initiatedBy,
       approvedBy: approvedBy ?? this.approvedBy,
       lpd: lpd ?? this.lpd,
+      crmStockistDistrict: crmStockistDistrict ?? this.crmStockistDistrict,
     );
   }
 
@@ -151,6 +155,7 @@ class WarrantyModel {
       'initiatedBy': initiatedBy,
       'approvedBy': approvedBy,
       'lpd': lpd,
+      'crmStockistDistrict': crmStockistDistrict,
     };
   }
 
@@ -187,6 +192,7 @@ class WarrantyModel {
       initiatedBy: map['initiatedBy'],
       approvedBy: map['approvedBy'],
       lpd: map['lpd'],
+      crmStockistDistrict: map['crmStockistDistrict'],
     );
   }
 
@@ -197,7 +203,7 @@ class WarrantyModel {
 
   @override
   String toString() {
-    return 'WarrantyModel(warrantySerialNo: $warrantySerialNo, crmCustomerName: $crmCustomerName, crmCustomerMobileNo: $crmCustomerMobileNo, itemDescription: $itemDescription, installationDate: $installationDate, model: $model, guaranteeStatus: $guaranteeStatus, guaranteePeriod: $guaranteePeriod, assignedTo: $assignedTo, custBillDate: $custBillDate, billNo: $billNo, invoiceNo: $invoiceNo, crmDealerName: $crmDealerName, crmStockistName: $crmStockistName, crmStockistMobileNo: $crmStockistMobileNo, crmStockistEmail: $crmStockistEmail, state: $state, description: $description, stockists: $stockists, customer: $customer, allocationStatus: $allocationStatus, createdOn: $createdOn, updatedOn: $updatedOn, initUserType: $initUserType, initiatedBy: $initiatedBy, approvedBy: $approvedBy, lpd: $lpd)';
+    return 'WarrantyModel(warrantySerialNo: $warrantySerialNo, crmCustomerName: $crmCustomerName, crmCustomerMobileNo: $crmCustomerMobileNo, itemDescription: $itemDescription, installationDate: $installationDate, model: $model, guaranteeStatus: $guaranteeStatus, guaranteePeriod: $guaranteePeriod, assignedTo: $assignedTo, custBillDate: $custBillDate, billNo: $billNo, invoiceNo: $invoiceNo, crmDealerName: $crmDealerName, crmStockistName: $crmStockistName, crmStockistMobileNo: $crmStockistMobileNo, crmStockistEmail: $crmStockistEmail, state: $state, description: $description, stockists: $stockists, customer: $customer, allocationStatus: $allocationStatus, createdOn: $createdOn, updatedOn: $updatedOn, initUserType: $initUserType, initiatedBy: $initiatedBy, approvedBy: $approvedBy, lpd: $lpd, crmStockistDistrict: $crmStockistDistrict)';
   }
 
   @override
@@ -231,7 +237,8 @@ class WarrantyModel {
         other.initUserType == initUserType &&
         other.initiatedBy == initiatedBy &&
         other.approvedBy == approvedBy &&
-        other.lpd == lpd;
+        other.lpd == lpd &&
+        other.crmStockistDistrict == crmStockistDistrict;
   }
 
   @override
@@ -262,6 +269,7 @@ class WarrantyModel {
         initUserType.hashCode ^
         initiatedBy.hashCode ^
         approvedBy.hashCode ^
-        lpd.hashCode;
+        lpd.hashCode ^
+        crmStockistDistrict.hashCode;
   }
 }

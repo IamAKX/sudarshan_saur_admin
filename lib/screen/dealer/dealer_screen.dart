@@ -100,7 +100,11 @@ class _DealerScreenState extends State<DealerScreen> {
   @override
   Widget build(BuildContext context) {
     _api = Provider.of<ApiProvider>(context);
-
+    if (_api.status == ApiStatus.loading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return SingleChildScrollView(
       padding: const EdgeInsets.all(defaultPadding),
       child: Column(

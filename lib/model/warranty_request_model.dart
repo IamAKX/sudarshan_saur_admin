@@ -35,6 +35,10 @@ class WarrantyRequestModel {
   String? invoiceNumber;
   String? lat;
   String? lon;
+  bool? isPhotoChecked;
+  bool? isOtherInfoChecked;
+  String? verifiedBy;
+  String? verificationDate;
   WarrantyRequestModel({
     this.customers,
     this.mobile2,
@@ -58,6 +62,10 @@ class WarrantyRequestModel {
     this.invoiceNumber,
     this.lat,
     this.lon,
+    this.isPhotoChecked,
+    this.isOtherInfoChecked,
+    this.verifiedBy,
+    this.verificationDate,
   });
 
   WarrantyRequestModel copyWith({
@@ -83,6 +91,10 @@ class WarrantyRequestModel {
     String? invoiceNumber,
     String? lat,
     String? lon,
+    bool? isPhotoChecked,
+    bool? isOtherInfoChecked,
+    String? verifiedBy,
+    String? verificationDate,
   }) {
     return WarrantyRequestModel(
       customers: customers ?? this.customers,
@@ -107,6 +119,10 @@ class WarrantyRequestModel {
       invoiceNumber: invoiceNumber ?? this.invoiceNumber,
       lat: lat ?? this.lat,
       lon: lon ?? this.lon,
+      isPhotoChecked: isPhotoChecked ?? this.isPhotoChecked,
+      isOtherInfoChecked: isOtherInfoChecked ?? this.isOtherInfoChecked,
+      verifiedBy: verifiedBy ?? this.verifiedBy,
+      verificationDate: verificationDate ?? this.verificationDate,
     );
   }
 
@@ -134,6 +150,10 @@ class WarrantyRequestModel {
       'invoiceNumber': invoiceNumber,
       'lat': lat,
       'lon': lon,
+      'isPhotoChecked': isPhotoChecked,
+      'isOtherInfoChecked': isOtherInfoChecked,
+      'verifiedBy': verifiedBy,
+      'verificationDate': verificationDate,
     };
   }
 
@@ -178,6 +198,10 @@ class WarrantyRequestModel {
       invoiceNumber: map['invoiceNumber'],
       lat: map['lat'],
       lon: map['lon'],
+      isPhotoChecked: map['isPhotoChecked'],
+      isOtherInfoChecked: map['isOtherInfoChecked'],
+      verifiedBy: map['verifiedBy'],
+      verificationDate: map['verificationDate'],
     );
   }
 
@@ -188,7 +212,7 @@ class WarrantyRequestModel {
 
   @override
   String toString() {
-    return 'WarrantyRequestModel(customers: $customers, mobile2: $mobile2, requestId: $requestId, installationAddress: $installationAddress, ownerAddress: $ownerAddress, warrantyDetails: $warrantyDetails, dealerInfo: $dealerInfo, technicianInfo: $technicianInfo, plumberInfo: $plumberInfo, answers: $answers, status: $status, images: $images, createdOn: $createdOn, updatedOn: $updatedOn, initUserType: $initUserType, initiatedBy: $initiatedBy, approvedBy: $approvedBy, installationDate: $installationDate, invoiceDate: $invoiceDate, invoiceNumber: $invoiceNumber, lat: $lat, lon: $lon)';
+    return 'WarrantyRequestModel(customers: $customers, mobile2: $mobile2, requestId: $requestId, installationAddress: $installationAddress, ownerAddress: $ownerAddress, warrantyDetails: $warrantyDetails, dealerInfo: $dealerInfo, technicianInfo: $technicianInfo, plumberInfo: $plumberInfo, answers: $answers, status: $status, images: $images, createdOn: $createdOn, updatedOn: $updatedOn, initUserType: $initUserType, initiatedBy: $initiatedBy, approvedBy: $approvedBy, installationDate: $installationDate, invoiceDate: $invoiceDate, invoiceNumber: $invoiceNumber, lat: $lat, lon: $lon, isPhotoChecked: $isPhotoChecked, isOtherInfoChecked: $isOtherInfoChecked, verifiedBy: $verifiedBy, verificationDate: $verificationDate)';
   }
 
   @override
@@ -217,7 +241,11 @@ class WarrantyRequestModel {
         other.invoiceDate == invoiceDate &&
         other.invoiceNumber == invoiceNumber &&
         other.lat == lat &&
-        other.lon == lon;
+        other.lon == lon &&
+        other.isPhotoChecked == isPhotoChecked &&
+        other.isOtherInfoChecked == isOtherInfoChecked &&
+        other.verifiedBy == verifiedBy &&
+        other.verificationDate == verificationDate;
   }
 
   @override
@@ -243,6 +271,10 @@ class WarrantyRequestModel {
         invoiceDate.hashCode ^
         invoiceNumber.hashCode ^
         lat.hashCode ^
-        lon.hashCode;
+        lon.hashCode ^
+        isPhotoChecked.hashCode ^
+        isOtherInfoChecked.hashCode ^
+        verifiedBy.hashCode ^
+        verificationDate.hashCode;
   }
 }

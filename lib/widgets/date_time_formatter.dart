@@ -10,6 +10,10 @@ class DateTimeFormatter {
     return DateFormat(databaseFormat).format(dateTime);
   }
 
+  static String toDatebaseFormat(DateTime dateTime) {
+    return DateFormat(databaseFormat).format(dateTime);
+  }
+
   static String timesAgo(String rawDate) {
     try {
       DateTime date = DateFormat(databaseFormat).parse(rawDate);
@@ -37,7 +41,7 @@ class DateTimeFormatter {
     }
   }
 
-   static String onlyDateShortWithTime(String rawDate) {
+  static String onlyDateShortWithTime(String rawDate) {
     try {
       DateTime date = DateFormat(databaseFormat).parse(rawDate);
       return DateFormat('dd-MM-yyyy hh:mm a').format(date);
@@ -45,7 +49,6 @@ class DateTimeFormatter {
       return '';
     }
   }
-
 
   static String dateTime(String rawDate) {
     try {

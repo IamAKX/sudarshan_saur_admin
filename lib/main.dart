@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
+import 'package:saur_admin/screen/home_container/home_container.dart';
 import 'package:saur_admin/screen/user_onboarding/login_screen.dart';
 import 'package:saur_admin/utils/router.dart';
 import 'package:saur_admin/utils/theme.dart';
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
         title: 'Sudarshan Saur | Admin Portal',
         theme: globalTheme(context),
         debugShowCheckedModeBanner: false,
-        home: const LoginScreen(),
+        home: const HomeContainer(),
         navigatorKey: navigatorKey,
         onGenerateRoute: NavRoute.generatedRoute,
       ),

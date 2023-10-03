@@ -9,6 +9,7 @@ import 'package:saur_admin/screen/serial_number/serial_detail_card.dart';
 import 'package:saur_admin/services/toast_service.dart';
 import 'package:saur_admin/utils/colors.dart';
 import 'package:saur_admin/utils/enum.dart';
+import 'package:saur_admin/widgets/date_time_formatter.dart';
 
 import '../../services/api_service.dart';
 import '../../utils/responsive.dart';
@@ -30,10 +31,15 @@ class SerialKeyDetail extends StatefulWidget {
 
 class _SerialKeyDetailState extends State<SerialKeyDetail> {
   bool isBlocked = false;
+  bool isPhotoChecked = false;
+  bool isOtherInfoChecked = false;
 
   late ApiProvider _api;
   WarrantyRequestModel? warrantyModel;
   final TextEditingController rejectReasonCtrl = TextEditingController();
+  final TextEditingController verifiedByCtrl = TextEditingController();
+  String verificationDate = DateTimeFormatter.now();
+
   @override
   void initState() {
     super.initState();
@@ -54,6 +60,11 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
   @override
   Widget build(BuildContext context) {
     _api = Provider.of<ApiProvider>(context);
+    if (_api.status == ApiStatus.loading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return SingleChildScrollView(
       padding: const EdgeInsets.all(defaultPadding),
       child: Column(
@@ -76,6 +87,64 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
                 getWarrantyStockistBusinessCard(context, warrantyModel),
                 getRequestQuestions(context, warrantyModel),
                 verticalGap(defaultPadding),
+                CheckboxListTile(
+                  tileColor: Colors.white,
+                  value: isPhotoChecked,
+                  onChanged: (value) {
+                    setState(() {
+                      isPhotoChecked = value ?? false;
+                    });
+                  },
+                  title: const Text('Photos Checked'),
+                ),
+                CheckboxListTile(
+                  tileColor: Colors.white,
+                  value: isOtherInfoChecked,
+                  onChanged: (value) {
+                    setState(() {
+                      isOtherInfoChecked = value ?? false;
+                    });
+                  },
+                  title: const Text('Other info Checked'),
+                ),
+                ListTile(
+                  tileColor: Colors.white,
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(
+                          1980), //DateTime.now() - not to allow to choose before today.
+                      lastDate: DateTime(2101),
+                    );
+                    if (pickedDate != null) {
+                      setState(() {
+                        verificationDate =
+                            DateTimeFormatter.toDatebaseFormat(pickedDate);
+                      });
+                    }
+                  },
+                  title: Text(
+                    DateTimeFormatter.onlyDateShort(verificationDate),
+                  ),
+                  subtitle: Text(
+                    'Verification Date',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: verifiedByCtrl,
+                    maxLines: 1,
+                    decoration: const InputDecoration(
+                      hintText: 'Verified By (Name)',
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: primaryColor),
+                      ),
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
@@ -118,11 +187,87 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
                       getWarrantyStockistBusinessCard(context, warrantyModel),
                       getRequestQuestions(context, warrantyModel),
                       verticalGap(defaultPadding),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CheckboxListTile(
+                              tileColor: Colors.white,
+                              value: isPhotoChecked,
+                              onChanged: (value) {
+                                setState(() {
+                                  isPhotoChecked = value ?? false;
+                                });
+                              },
+                              title: const Text('Photos Checked'),
+                            ),
+                          ),
+                          horizontalGap(defaultPadding / 2),
+                          Expanded(
+                            child: CheckboxListTile(
+                              tileColor: Colors.white,
+                              value: isOtherInfoChecked,
+                              onChanged: (value) {
+                                setState(() {
+                                  isOtherInfoChecked = value ?? false;
+                                });
+                              },
+                              title: const Text('Other info Checked'),
+                            ),
+                          )
+                        ],
+                      ),
+                      verticalGap(defaultPadding / 2),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ListTile(
+                              tileColor: Colors.white,
+                              onTap: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(
+                                      1980), //DateTime.now() - not to allow to choose before today.
+                                  lastDate: DateTime(2101),
+                                );
+                                if (pickedDate != null) {
+                                  setState(() {
+                                    verificationDate =
+                                        DateTimeFormatter.toDatebaseFormat(
+                                            pickedDate);
+                                  });
+                                }
+                              },
+                              title: Text(
+                                DateTimeFormatter.onlyDateShort(
+                                    verificationDate),
+                              ),
+                              subtitle: Text(
+                                'Verification Date',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                          ),
+                          horizontalGap(defaultPadding / 2),
+                          Expanded(
+                            child: TextField(
+                              controller: verifiedByCtrl,
+                              maxLines: 1,
+                              decoration: const InputDecoration(
+                                hintText: 'Verified By (Name)',
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: primaryColor),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
                           controller: rejectReasonCtrl,
-                          maxLines: 3,
+                          maxLines: 1,
                           decoration: const InputDecoration(
                             hintText: 'Rejection reason',
                             border: OutlineInputBorder(
@@ -159,8 +304,25 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
         backgroundColor: Colors.green, // Background color
       ),
       onPressed: () async {
-        _api.updateWarrantyRequest({'status': AllocationStatus.APPROVED.name},
-            warrantyModel?.requestId?.toString() ?? '').then((value) {
+        if (verifiedByCtrl.text.isEmpty) {
+          ToastService.instance.showError('Enter verified by name');
+          return;
+        }
+        if (!isPhotoChecked) {
+          ToastService.instance.showError('Please check the photos');
+          return;
+        }
+        if (!isOtherInfoChecked) {
+          ToastService.instance.showError('Please check other information');
+          return;
+        }
+        _api.updateWarrantyRequest({
+          'status': AllocationStatus.APPROVED.name,
+          'isPhotoChecked': isPhotoChecked,
+          'isOtherInfoChecked': isOtherInfoChecked,
+          'verifiedBy': verifiedByCtrl.text,
+          'verificationDate': verificationDate
+        }, warrantyModel?.requestId?.toString() ?? '').then((value) {
           if (value) {
             ToastService.instance.showSuccess('Request approved');
           }
@@ -186,9 +348,25 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
           ToastService.instance.showError('Add rejection reason');
           return;
         }
+        if (verifiedByCtrl.text.isEmpty) {
+          ToastService.instance.showError('Enter verified by name');
+          return;
+        }
+        if (!isPhotoChecked) {
+          ToastService.instance.showError('Please check the photos');
+          return;
+        }
+        if (!isOtherInfoChecked) {
+          ToastService.instance.showError('Please check other information');
+          return;
+        }
         _api.updateWarrantyRequest({
           'status': AllocationStatus.DECLINED.name,
-          'rejectReason': rejectReasonCtrl.text
+          'rejectReason': rejectReasonCtrl.text,
+          'isPhotoChecked': isPhotoChecked,
+          'isOtherInfoChecked': isOtherInfoChecked,
+          'verifiedBy': verifiedByCtrl.text,
+          'verificationDate': verificationDate
         }, warrantyModel?.requestId?.toString() ?? '').then((value) {
           if (value) {
             ToastService.instance.showSuccess('Request rejected');

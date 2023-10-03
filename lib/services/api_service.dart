@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'dart:js_interop';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:saur_admin/model/customer_model.dart';
@@ -526,78 +527,85 @@ class ApiProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         status = ApiStatus.success;
         // parsing stockists
-        var stockistArr =
-            response.data['data']['data']['stockists']['statuses'];
-        for (var item in stockistArr) {
-          switch (item['status']) {
-            case 'CREATED':
-              dashboardMetrics.stockistCreated = item['count'];
-              break;
-            case 'ACTIVE':
-              dashboardMetrics.stockistActive = item['count'];
-              break;
-            case 'SUSPENDED':
-              dashboardMetrics.stockistSuspended = item['count'];
-              break;
-            case 'BLOCKED':
-              dashboardMetrics.stockistBlocked = item['count'];
-              break;
+        if (response.data['data']['data']['stockists'] != null) {
+          var stockistArr =
+              response.data['data']['data']['stockists']['statuses'];
+          for (var item in stockistArr) {
+            switch (item['status']) {
+              case 'CREATED':
+                dashboardMetrics.stockistCreated = item['count'];
+                break;
+              case 'ACTIVE':
+                dashboardMetrics.stockistActive = item['count'];
+                break;
+              case 'SUSPENDED':
+                dashboardMetrics.stockistSuspended = item['count'];
+                break;
+              case 'BLOCKED':
+                dashboardMetrics.stockistBlocked = item['count'];
+                break;
+            }
           }
         }
 
         // parsing customer
-        var customerArr =
-            response.data['data']['data']['customers']['statuses'];
-        for (var item in customerArr) {
-          switch (item['status']) {
-            case 'CREATED':
-              dashboardMetrics.customerCreated = item['count'];
-              break;
-            case 'ACTIVE':
-              dashboardMetrics.customerActive = item['count'];
-              break;
-            case 'SUSPENDED':
-              dashboardMetrics.customerSuspended = item['count'];
-              break;
-            case 'BLOCKED':
-              dashboardMetrics.customerBlocked = item['count'];
-              break;
+        if (response.data['data']['data']['customers'] != null) {
+          var customerArr =
+              response.data['data']['data']['customers']['statuses'];
+          for (var item in customerArr) {
+            switch (item['status']) {
+              case 'CREATED':
+                dashboardMetrics.customerCreated = item['count'];
+                break;
+              case 'ACTIVE':
+                dashboardMetrics.customerActive = item['count'];
+                break;
+              case 'SUSPENDED':
+                dashboardMetrics.customerSuspended = item['count'];
+                break;
+              case 'BLOCKED':
+                dashboardMetrics.customerBlocked = item['count'];
+                break;
+            }
           }
         }
-
         // parsing dealer
-        var dealerArr = response.data['data']['data']['dealers']['statuses'];
-        for (var item in dealerArr) {
-          switch (item['status']) {
-            case 'CREATED':
-              dashboardMetrics.dealerCreated = item['count'];
-              break;
-            case 'ACTIVE':
-              dashboardMetrics.dealerActive = item['count'];
-              break;
-            case 'SUSPENDED':
-              dashboardMetrics.dealerSuspended = item['count'];
-              break;
-            case 'BLOCKED':
-              dashboardMetrics.dealerBlocked = item['count'];
-              break;
+        if (response.data['data']['data']['dealers'] != null) {
+          var dealerArr = response.data['data']['data']['dealers']['statuses'];
+          for (var item in dealerArr) {
+            switch (item['status']) {
+              case 'CREATED':
+                dashboardMetrics.dealerCreated = item['count'];
+                break;
+              case 'ACTIVE':
+                dashboardMetrics.dealerActive = item['count'];
+                break;
+              case 'SUSPENDED':
+                dashboardMetrics.dealerSuspended = item['count'];
+                break;
+              case 'BLOCKED':
+                dashboardMetrics.dealerBlocked = item['count'];
+                break;
+            }
           }
         }
 
         // parsing warrantyDetails
-        var warrantyDetailsArr =
-            response.data['data']['data']['warrantyDetails']['statuses'];
-        for (var item in warrantyDetailsArr) {
-          switch (item['status']) {
-            case 'PENDING':
-              dashboardMetrics.warrantyRequestPending = item['count'];
-              break;
-            case 'APPROVED':
-              dashboardMetrics.warrantyRequestApproved = item['count'];
-              break;
-            case 'DECLINED':
-              dashboardMetrics.warrantyRequestDeclined = item['count'];
-              break;
+        if (response.data['data']['data']['warrantyDetails'] != null) {
+          var warrantyDetailsArr =
+              response.data['data']['data']['warrantyDetails']['statuses'];
+          for (var item in warrantyDetailsArr) {
+            switch (item['status']) {
+              case 'PENDING':
+                dashboardMetrics.warrantyRequestPending = item['count'];
+                break;
+              case 'APPROVED':
+                dashboardMetrics.warrantyRequestApproved = item['count'];
+                break;
+              case 'DECLINED':
+                dashboardMetrics.warrantyRequestDeclined = item['count'];
+                break;
+            }
           }
         }
         notifyListeners();
