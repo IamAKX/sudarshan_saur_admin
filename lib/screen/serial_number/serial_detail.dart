@@ -1,10 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:saur_admin/model/warranty_model.dart';
 import 'package:saur_admin/model/warranty_request_model.dart';
-import 'package:saur_admin/screen/customer/customer_detail_body.dart';
 import 'package:saur_admin/screen/serial_number/serial_detail_card.dart';
 import 'package:saur_admin/services/toast_service.dart';
 import 'package:saur_admin/utils/colors.dart';
@@ -52,7 +48,11 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
     _api.getWarrantyRequestById(HomeContainer.args).then((value) {
       setState(() {
         warrantyModel = value;
-        debugPrint(warrantyModel.toString());
+        verifiedByCtrl.text = warrantyModel?.verifiedBy ?? '';
+        verificationDate =
+            warrantyModel?.verifiedDate ?? DateTimeFormatter.now();
+        isPhotoChecked = warrantyModel?.photoChecked ?? false;
+        isOtherInfoChecked = warrantyModel?.otherInfoChecked ?? false;
       });
     });
   }
@@ -316,12 +316,19 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
           ToastService.instance.showError('Please check other information');
           return;
         }
+        // if (!DateTimeFormatter.isValidInstallationDate(
+        //     warrantyModel?.installationDate ?? '', verificationDate)) {
+        //   ToastService.instance
+        //       .showError('Verification date should be after installation date');
+        //   return;
+        // }
+
         _api.updateWarrantyRequest({
           'status': AllocationStatus.APPROVED.name,
-          'isPhotoChecked': isPhotoChecked,
-          'isOtherInfoChecked': isOtherInfoChecked,
+          'photoChecked': isPhotoChecked,
+          'otherInfoChecked': isOtherInfoChecked,
           'verifiedBy': verifiedByCtrl.text,
-          'verificationDate': verificationDate
+          'verifiedDate': verificationDate
         }, warrantyModel?.requestId?.toString() ?? '').then((value) {
           if (value) {
             ToastService.instance.showSuccess('Request approved');
@@ -360,13 +367,19 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
           ToastService.instance.showError('Please check other information');
           return;
         }
+        // if (!DateTimeFormatter.isValidInstallationDate(
+        //     warrantyModel?.installationDate ?? '', verificationDate)) {
+        //   ToastService.instance
+        //       .showError('Verification date should be after installation date');
+        //   return;
+        // }
         _api.updateWarrantyRequest({
           'status': AllocationStatus.DECLINED.name,
           'rejectReason': rejectReasonCtrl.text,
-          'isPhotoChecked': isPhotoChecked,
-          'isOtherInfoChecked': isOtherInfoChecked,
+          'photoChecked': isPhotoChecked,
+          'otherInfoChecked': isOtherInfoChecked,
           'verifiedBy': verifiedByCtrl.text,
-          'verificationDate': verificationDate
+          'verifiedDate': verificationDate
         }, warrantyModel?.requestId?.toString() ?? '').then((value) {
           if (value) {
             ToastService.instance.showSuccess('Request rejected');
