@@ -29,6 +29,7 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
   bool isBlocked = false;
   bool isPhotoChecked = false;
   bool isOtherInfoChecked = false;
+  bool isPaymentDone = false;
 
   late ApiProvider _api;
   WarrantyRequestModel? warrantyModel;
@@ -53,6 +54,7 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
             warrantyModel?.verifiedDate ?? DateTimeFormatter.now();
         isPhotoChecked = warrantyModel?.photoChecked ?? false;
         isOtherInfoChecked = warrantyModel?.otherInfoChecked ?? false;
+        isPaymentDone = warrantyModel?.paymentDone ?? false;
       });
     });
   }
@@ -106,6 +108,16 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
                     });
                   },
                   title: const Text('Other info Checked'),
+                ),
+                CheckboxListTile(
+                  tileColor: Colors.white,
+                  value: isPaymentDone,
+                  onChanged: (value) {
+                    setState(() {
+                      isPaymentDone = value ?? false;
+                    });
+                  },
+                  title: const Text('Complete payment done'),
                 ),
                 ListTile(
                   tileColor: Colors.white,
@@ -217,6 +229,17 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
                         ],
                       ),
                       verticalGap(defaultPadding / 2),
+                      CheckboxListTile(
+                        tileColor: Colors.white,
+                        value: isPaymentDone,
+                        onChanged: (value) {
+                          setState(() {
+                            isPaymentDone = value ?? false;
+                          });
+                        },
+                        title: const Text('Complete payment done'),
+                      ),
+                      verticalGap(defaultPadding / 2),
                       Row(
                         children: [
                           Expanded(
@@ -316,17 +339,23 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
           ToastService.instance.showError('Please check other information');
           return;
         }
-        // if (!DateTimeFormatter.isValidInstallationDate(
-        //     warrantyModel?.installationDate ?? '', verificationDate)) {
-        //   ToastService.instance
-        //       .showError('Verification date should be after installation date');
-        //   return;
-        // }
+        if (!isPaymentDone) {
+          ToastService.instance
+              .showError('Cannot approved if complete payment is not done');
+          return;
+        }
+        if (!DateTimeFormatter.isValidInstallationDate(
+            warrantyModel?.installationDate ?? '', verificationDate)) {
+          ToastService.instance
+              .showError('Verification date cannot be past date');
+          return;
+        }
 
         _api.updateWarrantyRequest({
           'status': AllocationStatus.APPROVED.name,
           'photoChecked': isPhotoChecked,
           'otherInfoChecked': isOtherInfoChecked,
+          'paymentDone': isPaymentDone,
           'verifiedBy': verifiedByCtrl.text,
           'verifiedDate': verificationDate
         }, warrantyModel?.requestId?.toString() ?? '').then((value) {
@@ -367,17 +396,18 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
           ToastService.instance.showError('Please check other information');
           return;
         }
-        // if (!DateTimeFormatter.isValidInstallationDate(
-        //     warrantyModel?.installationDate ?? '', verificationDate)) {
-        //   ToastService.instance
-        //       .showError('Verification date should be after installation date');
-        //   return;
-        // }
+        if (!DateTimeFormatter.isValidInstallationDate(
+            warrantyModel?.installationDate ?? '', verificationDate)) {
+          ToastService.instance
+              .showError('Verification date cannot be past date');
+          return;
+        }
         _api.updateWarrantyRequest({
           'status': AllocationStatus.DECLINED.name,
           'rejectReason': rejectReasonCtrl.text,
           'photoChecked': isPhotoChecked,
           'otherInfoChecked': isOtherInfoChecked,
+          'paymentDone': isPaymentDone,
           'verifiedBy': verifiedByCtrl.text,
           'verifiedDate': verificationDate
         }, warrantyModel?.requestId?.toString() ?? '').then((value) {
