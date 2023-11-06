@@ -72,4 +72,20 @@ class DateTimeFormatter {
       return '';
     }
   }
+
+  static DateTime invoiceDateTime(String date) {
+    try {
+      return DateFormat('dd/MM/yyyy').parse(date);
+    } catch (e) {
+      return DateTime.now();
+    }
+  }
+
+  static String invoiceDateTimeToString(DateTime date) {
+    try {
+      return DateFormat('dd/MM/yyyy').format(date);
+    } catch (e) {
+      return '';
+    }
+  }
 }

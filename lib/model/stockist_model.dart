@@ -6,72 +6,64 @@ import 'package:saur_admin/model/address_model.dart';
 import 'package:saur_admin/model/dealer_model.dart';
 
 class StockistModel {
-  int? stockistId;
+ int? stockistId;
   String? stockistName;
-  String? password;
   String? mobileNo;
   String? status;
   String? email;
   AddressModel? address;
-  String? image;
-  String? lastLogin;
-  String? businessName;
-  String? businessAddress;
-  String? gstNumber;
-  String? updatedOn;
   String? createdOn;
-  List<DealerModel>? dealers;
+  String? updatedOn;
+  String? lastLogin;
+  String? image;
+  String? businessName;
+  String? gstNumber;
+  String? stockistCode;
   StockistModel({
     this.stockistId,
     this.stockistName,
-    this.password,
     this.mobileNo,
     this.status,
     this.email,
     this.address,
-    this.image,
-    this.lastLogin,
-    this.businessName,
-    this.businessAddress,
-    this.gstNumber,
-    this.updatedOn,
     this.createdOn,
-    this.dealers,
+    this.updatedOn,
+    this.lastLogin,
+    this.image,
+    this.businessName,
+    this.gstNumber,
+    this.stockistCode,
   });
 
   StockistModel copyWith({
     int? stockistId,
     String? stockistName,
-    String? password,
     String? mobileNo,
     String? status,
     String? email,
     AddressModel? address,
-    String? image,
-    String? lastLogin,
-    String? businessName,
-    String? businessAddress,
-    String? gstNumber,
-    String? updatedOn,
     String? createdOn,
-    List<DealerModel>? dealers,
+    String? updatedOn,
+    String? lastLogin,
+    String? image,
+    String? businessName,
+    String? gstNumber,
+    String? stockistCode,
   }) {
     return StockistModel(
       stockistId: stockistId ?? this.stockistId,
       stockistName: stockistName ?? this.stockistName,
-      password: password ?? this.password,
       mobileNo: mobileNo ?? this.mobileNo,
       status: status ?? this.status,
       email: email ?? this.email,
       address: address ?? this.address,
-      image: image ?? this.image,
-      lastLogin: lastLogin ?? this.lastLogin,
-      businessName: businessName ?? this.businessName,
-      businessAddress: businessAddress ?? this.businessAddress,
-      gstNumber: gstNumber ?? this.gstNumber,
-      updatedOn: updatedOn ?? this.updatedOn,
       createdOn: createdOn ?? this.createdOn,
-      dealers: dealers ?? this.dealers,
+      updatedOn: updatedOn ?? this.updatedOn,
+      lastLogin: lastLogin ?? this.lastLogin,
+      image: image ?? this.image,
+      businessName: businessName ?? this.businessName,
+      gstNumber: gstNumber ?? this.gstNumber,
+      stockistCode: stockistCode ?? this.stockistCode,
     );
   }
 
@@ -79,19 +71,17 @@ class StockistModel {
     return {
       'stockistId': stockistId,
       'stockistName': stockistName,
-      'password': password,
       'mobileNo': mobileNo,
       'status': status,
       'email': email,
       'address': address?.toMap(),
-      'image': image,
-      'lastLogin': lastLogin,
-      'businessName': businessName,
-      'businessAddress': businessAddress,
-      'gstNumber': gstNumber,
-      'updatedOn': updatedOn,
       'createdOn': createdOn,
-      'dealers': dealers?.map((x) => x?.toMap())?.toList(),
+      'updatedOn': updatedOn,
+      'lastLogin': lastLogin,
+      'image': image,
+      'businessName': businessName,
+      'gstNumber': gstNumber,
+      'stockistCode': stockistCode,
     };
   }
 
@@ -99,19 +89,17 @@ class StockistModel {
     return StockistModel(
       stockistId: map['stockistId']?.toInt(),
       stockistName: map['stockistName'],
-      password: map['password'],
       mobileNo: map['mobileNo'],
       status: map['status'],
       email: map['email'],
       address: map['address'] != null ? AddressModel.fromMap(map['address']) : null,
-      image: map['image'],
-      lastLogin: map['lastLogin'],
-      businessName: map['businessName'],
-      businessAddress: map['businessAddress'],
-      gstNumber: map['gstNumber'],
-      updatedOn: map['updatedOn'],
       createdOn: map['createdOn'],
-      dealers: map['dealers'] != null ? List<DealerModel>.from(map['dealers']?.map((x) => DealerModel.fromMap(x))) : null,
+      updatedOn: map['updatedOn'],
+      lastLogin: map['lastLogin'],
+      image: map['image'],
+      businessName: map['businessName'],
+      gstNumber: map['gstNumber'],
+      stockistCode: map['stockistCode'],
     );
   }
 
@@ -121,7 +109,7 @@ class StockistModel {
 
   @override
   String toString() {
-    return 'StockistModel(stockistId: $stockistId, stockistName: $stockistName, password: $password, mobileNo: $mobileNo, status: $status, email: $email, address: $address, image: $image, lastLogin: $lastLogin, businessName: $businessName, businessAddress: $businessAddress, gstNumber: $gstNumber, updatedOn: $updatedOn, createdOn: $createdOn, dealers: $dealers)';
+    return 'StockistModel(stockistId: $stockistId, stockistName: $stockistName, mobileNo: $mobileNo, status: $status, email: $email, address: $address, createdOn: $createdOn, updatedOn: $updatedOn, lastLogin: $lastLogin, image: $image, businessName: $businessName, gstNumber: $gstNumber, stockistCode: $stockistCode)';
   }
 
   @override
@@ -131,37 +119,33 @@ class StockistModel {
     return other is StockistModel &&
       other.stockistId == stockistId &&
       other.stockistName == stockistName &&
-      other.password == password &&
       other.mobileNo == mobileNo &&
       other.status == status &&
       other.email == email &&
       other.address == address &&
-      other.image == image &&
-      other.lastLogin == lastLogin &&
-      other.businessName == businessName &&
-      other.businessAddress == businessAddress &&
-      other.gstNumber == gstNumber &&
-      other.updatedOn == updatedOn &&
       other.createdOn == createdOn &&
-      listEquals(other.dealers, dealers);
+      other.updatedOn == updatedOn &&
+      other.lastLogin == lastLogin &&
+      other.image == image &&
+      other.businessName == businessName &&
+      other.gstNumber == gstNumber &&
+      other.stockistCode == stockistCode;
   }
 
   @override
   int get hashCode {
     return stockistId.hashCode ^
       stockistName.hashCode ^
-      password.hashCode ^
       mobileNo.hashCode ^
       status.hashCode ^
       email.hashCode ^
       address.hashCode ^
-      image.hashCode ^
-      lastLogin.hashCode ^
-      businessName.hashCode ^
-      businessAddress.hashCode ^
-      gstNumber.hashCode ^
-      updatedOn.hashCode ^
       createdOn.hashCode ^
-      dealers.hashCode;
+      updatedOn.hashCode ^
+      lastLogin.hashCode ^
+      image.hashCode ^
+      businessName.hashCode ^
+      gstNumber.hashCode ^
+      stockistCode.hashCode;
   }
 }

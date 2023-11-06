@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:saur_admin/model/dealer_model.dart';
+import 'package:saur_admin/utils/api.dart';
 import 'package:saur_admin/utils/colors.dart';
 import 'package:saur_admin/utils/enum.dart';
 import 'package:saur_admin/utils/helper_methods.dart';
 import 'package:saur_admin/widgets/gaps.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../utils/theme.dart';
 import '../../widgets/date_time_formatter.dart';
@@ -52,11 +54,11 @@ Card getDealerBusinessCard(BuildContext context, DealerModel? dealerModel) {
           ),
           verticalGap(defaultPadding),
           Text(
-            'Business Address',
+            'Stockist Code',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            '${dealerModel?.businessAddress}',
+            '${dealerModel?.stockistCode}',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -131,7 +133,8 @@ Card getDealerDetailCard(BuildContext context, DealerModel? dealerModel) {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            DateTimeFormatter.onlyDateShortWithTime(dealerModel?.lastLogin ?? ''),
+            DateTimeFormatter.onlyDateShortWithTime(
+                dealerModel?.lastLogin ?? ''),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: textColorDark,
                   height: 1.8,
@@ -152,19 +155,19 @@ Card getDealerDetailCard(BuildContext context, DealerModel? dealerModel) {
                 ),
           ),
           verticalGap(defaultPadding),
-          Text(
-            'Email',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            '${dealerModel?.email}',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: textColorDark,
-                  height: 1.8,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          verticalGap(defaultPadding),
+          // Text(
+          //   'Stockist Business Name',
+          //   style: Theme.of(context).textTheme.titleMedium,
+          // ),
+          // Text(
+          //   '${dealerModel?.createdOn}',
+          //   style: Theme.of(context).textTheme.titleSmall?.copyWith(
+          //         color: textColorDark,
+          //         height: 1.8,
+          //         fontWeight: FontWeight.bold,
+          //       ),
+          // ),
+          // verticalGap(defaultPadding),
           Text(
             'Personal Address',
             style: Theme.of(context).textTheme.titleMedium,
@@ -177,6 +180,14 @@ Card getDealerDetailCard(BuildContext context, DealerModel? dealerModel) {
                   fontWeight: FontWeight.bold,
                 ),
           ),
+          verticalGap(defaultPadding),
+          TextButton(
+            onPressed: () {
+              launchUrl(
+                  Uri.parse('${Api.dealerAgreement}${dealerModel?.dealerId}'));
+            },
+            child: Text('Download Agreement'),
+          )
         ],
       ),
     ),

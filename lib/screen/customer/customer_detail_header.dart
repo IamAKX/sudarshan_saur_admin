@@ -143,26 +143,26 @@ class _CustomerDetailHeaderState extends State<CustomerDetailHeader> {
                                     color: primaryColor,
                                   ),
                             ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  LineAwesomeIcons.envelope,
-                                  color: primaryColor,
-                                  size: 25,
-                                ),
-                                horizontalGap(defaultPadding / 2),
-                                Text(
-                                  widget.email,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium
-                                      ?.copyWith(
-                                          color: primaryColor, height: 1.8),
-                                ),
-                              ],
-                            ),
+                            // Row(
+                            //   mainAxisSize: MainAxisSize.min,
+                            //   crossAxisAlignment: CrossAxisAlignment.center,
+                            //   children: [
+                            //     const Icon(
+                            //       LineAwesomeIcons.envelope,
+                            //       color: primaryColor,
+                            //       size: 25,
+                            //     ),
+                            //     horizontalGap(defaultPadding / 2),
+                            //     Text(
+                            //       widget.email,
+                            //       style: Theme.of(context)
+                            //           .textTheme
+                            //           .titleMedium
+                            //           ?.copyWith(
+                            //               color: primaryColor, height: 1.8),
+                            //     ),
+                            //   ],
+                            // ),
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -219,24 +219,24 @@ class _CustomerDetailHeaderState extends State<CustomerDetailHeader> {
                               color: Colors.white,
                             ),
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            LineAwesomeIcons.envelope,
-                            color: Colors.white,
-                            size: 25,
-                          ),
-                          horizontalGap(defaultPadding / 2),
-                          Text(
-                            widget.email,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(color: Colors.white, height: 1.8),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   crossAxisAlignment: CrossAxisAlignment.center,
+                      //   children: [
+                      //     const Icon(
+                      //       LineAwesomeIcons.envelope,
+                      //       color: Colors.white,
+                      //       size: 25,
+                      //     ),
+                      //     horizontalGap(defaultPadding / 2),
+                      //     Text(
+                      //       widget.email,
+                      //       style: Theme.of(context)
+                      //           .textTheme
+                      //           .titleMedium
+                      //           ?.copyWith(color: Colors.white, height: 1.8),
+                      //     ),
+                      //   ],
+                      // ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [

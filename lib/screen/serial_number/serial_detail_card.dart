@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:saur_admin/screen/serial_number/serail_upload_popups.dart';
 import 'dart:html' as html;
 
 import '../../model/warranty_request_model.dart';
@@ -10,8 +11,8 @@ import '../../widgets/date_time_formatter.dart';
 import '../../widgets/gaps.dart';
 import 'dart:js' as js;
 
-Card getWarrentyDetailsCard(
-    BuildContext context, WarrantyRequestModel? warrantyModel) {
+Card getWarrentyDetailsCard(BuildContext context,
+    WarrantyRequestModel? warrantyModel, Function reload) {
   return Card(
     color: Colors.white,
     child: Container(
@@ -23,12 +24,23 @@ Card getWarrentyDetailsCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Guarantee Detail',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge
-                      ?.copyWith(color: primaryColor),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Guarantee Detail',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(color: primaryColor),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        updateGuarantyDetail(context, warrantyModel, reload);
+                      },
+                      icon: Icon(Icons.edit),
+                    ),
+                  ],
                 ),
                 verticalGap(defaultPadding),
                 Text(
@@ -154,7 +166,10 @@ Card getWarrentyDetailsCard(
 }
 
 Card getWarrantyStockistBusinessCard(
-    BuildContext context, WarrantyRequestModel? warrantyRequestModel) {
+  BuildContext context,
+  WarrantyRequestModel? warrantyRequestModel,
+  Function() reloadScreen,
+) {
   return Card(
     color: Colors.white,
     child: Container(
@@ -166,12 +181,24 @@ Card getWarrantyStockistBusinessCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Stockist Detail',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge
-                      ?.copyWith(color: primaryColor),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Stockist Detail',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(color: primaryColor),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        updateDealerTechPlumber(
+                            context, warrantyRequestModel, reloadScreen);
+                      },
+                      icon: Icon(Icons.edit),
+                    )
+                  ],
                 ),
                 verticalGap(defaultPadding),
                 Text(
@@ -358,8 +385,8 @@ Card getWarrantyStockistBusinessCard(
   );
 }
 
-Card getRequestQuestions(
-    BuildContext context, WarrantyRequestModel? warrantyRequestModel) {
+Card getRequestQuestions(BuildContext context,
+    WarrantyRequestModel? warrantyRequestModel, Function() reloadScreen) {
   return Card(
     color: Colors.white,
     child: Container(
@@ -369,12 +396,23 @@ Card getRequestQuestions(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              'Other Information',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge
-                  ?.copyWith(color: primaryColor),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Other Information',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(color: primaryColor),
+                ),
+                IconButton(
+                    onPressed: () {
+                      updateOtherInfo(
+                          context, warrantyRequestModel, reloadScreen);
+                    },
+                    icon: Icon(Icons.edit))
+              ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -414,8 +452,8 @@ Card getRequestQuestions(
   );
 }
 
-Card getWarrantyCustomerDetailCard(
-    BuildContext context, WarrantyRequestModel? warrantyRequestModel) {
+Card getWarrantyCustomerDetailCard(BuildContext context,
+    WarrantyRequestModel? warrantyRequestModel, Function() reloadScreen) {
   return Card(
     color: Colors.white,
     child: Container(
@@ -429,12 +467,23 @@ Card getWarrantyCustomerDetailCard(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  'Customer detail',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge
-                      ?.copyWith(color: primaryColor),
+                Row(
+                  children: [
+                    Text(
+                      'Customer detail',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(color: primaryColor),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        updateIntallationAddress(
+                            context, warrantyRequestModel, reloadScreen);
+                      },
+                      icon: Icon(Icons.edit),
+                    ),
+                  ],
                 ),
                 verticalGap(defaultPadding),
                 Text(
@@ -450,11 +499,22 @@ Card getWarrantyCustomerDetailCard(
                 ),
                 verticalGap(defaultPadding),
                 Text(
-                  'Address',
+                  'Installation Address',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Text(
                   prepareAddress(warrantyRequestModel?.installationAddress),
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: textColorDark,
+                      ),
+                ),
+                verticalGap(defaultPadding),
+                Text(
+                  'Owner Address',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  prepareAddress(warrantyRequestModel?.ownerAddress),
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: textColorDark,
                       ),

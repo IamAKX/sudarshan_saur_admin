@@ -84,10 +84,12 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
             mobile: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                getWarrentyDetailsCard(context, warrantyModel),
-                getWarrantyCustomerDetailCard(context, warrantyModel),
-                getWarrantyStockistBusinessCard(context, warrantyModel),
-                getRequestQuestions(context, warrantyModel),
+                getWarrentyDetailsCard(context, warrantyModel, reloadScreen),
+                getWarrantyCustomerDetailCard(
+                    context, warrantyModel, reloadScreen),
+                getWarrantyStockistBusinessCard(
+                    context, warrantyModel, reloadScreen),
+                getRequestQuestions(context, warrantyModel, reloadScreen),
                 verticalGap(defaultPadding),
                 CheckboxListTile(
                   tileColor: Colors.white,
@@ -189,15 +191,18 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
                 Expanded(
                     child: Column(
                   children: [
-                    getWarrentyDetailsCard(context, warrantyModel),
-                    getWarrantyCustomerDetailCard(context, warrantyModel),
+                    getWarrentyDetailsCard(
+                        context, warrantyModel, reloadScreen),
+                    getWarrantyCustomerDetailCard(
+                        context, warrantyModel, reloadScreen),
                   ],
                 )),
                 Expanded(
                   child: Column(
                     children: [
-                      getWarrantyStockistBusinessCard(context, warrantyModel),
-                      getRequestQuestions(context, warrantyModel),
+                      getWarrantyStockistBusinessCard(
+                          context, warrantyModel, reloadScreen),
+                      getRequestQuestions(context, warrantyModel, reloadScreen),
                       verticalGap(defaultPadding),
                       Row(
                         children: [
