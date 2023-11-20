@@ -75,6 +75,8 @@ class _SerialNumberScreenState extends State<SerialNumberScreen> {
             'customerId': e.customers?.customerId,
             'customerName': e.customers?.customerName,
             'custPhone': e.customers?.mobileNo,
+            'district': e.installationAddress?.district,
+            'state': e.installationAddress?.state,
             'initUserType': e.initUserType,
             'createdOn': DateTimeFormatter.onlyDateLong(e.createdOn ?? ''),
             'allocationStatus': e.status ?? '',
@@ -140,6 +142,16 @@ class _SerialNumberScreenState extends State<SerialNumberScreen> {
                   WebDataColumn(
                     name: 'custPhone',
                     label: const Text('Cust Phone'),
+                    dataCell: (value) => DataCell(Text('$value')),
+                  ),
+                  WebDataColumn(
+                    name: 'district',
+                    label: const Text('District'),
+                    dataCell: (value) => DataCell(Text('$value')),
+                  ),
+                  WebDataColumn(
+                    name: 'state',
+                    label: const Text('State'),
                     dataCell: (value) => DataCell(Text('$value')),
                   ),
                   WebDataColumn(
