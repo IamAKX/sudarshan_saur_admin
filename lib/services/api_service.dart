@@ -626,4 +626,38 @@ class ApiProvider extends ChangeNotifier {
     notifyListeners();
     return dashboardMetrics;
   }
+
+  Future<bool> deleteApi(String api, String id) async {
+    status = ApiStatus.loading;
+
+    notifyListeners();
+    try {
+      Response response = await _dio.delete(
+        '$api/$id',
+        options: Options(
+          contentType: 'application/json',
+          responseType: ResponseType.json,
+        ),
+      );
+      if (response.statusCode == 200) {
+        status = ApiStatus.success;
+        notifyListeners();
+        return true;
+      }
+    } on DioException catch (e) {
+      status = ApiStatus.failed;
+      var resBody = e.response?.data ?? {};
+      log(e.response?.data.toString() ?? e.response.toString());
+      notifyListeners();
+      ToastService.instance.showError('Error : ${resBody['message']}');
+    } catch (e) {
+      status = ApiStatus.failed;
+      notifyListeners();
+      ToastService.instance.showError(e.toString());
+      log(e.toString());
+    }
+    status = ApiStatus.failed;
+    notifyListeners();
+    return false;
+  }
 }

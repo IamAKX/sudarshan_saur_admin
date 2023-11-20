@@ -170,13 +170,56 @@ class _StockistScreenState extends State<StockistScreen> {
                       label: const Text('View'),
                       dataCell: (value) {
                         return DataCell(
-                          IconButton(
-                              onPressed: () {
-                                HomeContainer.args = value;
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    HomeContainer.args = value;
 
-                                widget.navigateMenu(41);
-                              },
-                              icon: const Icon(LineAwesomeIcons.eye)),
+                                    widget.navigateMenu(41);
+                                  },
+                                  icon: const Icon(LineAwesomeIcons.eye)),
+                              IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: const Text("Are you sure?"),
+                                          content: const Text(
+                                              "You are about to delete this entity and cannot be recovered"),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('Cancel'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                _api
+                                                    .deleteApi(
+                                                        Api.stockist, value)
+                                                    .then((value) {
+                                                  Navigator.pop(context);
+                                                  reloadScreen();
+                                                });
+                                              },
+                                              child: const Text(
+                                                'Delete',
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: const Icon(Icons.delete)),
+                            ],
+                          ),
                         );
                       }),
                   WebDataColumn(
