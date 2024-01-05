@@ -115,7 +115,10 @@ class _DealerScreenState extends State<DealerScreen> {
             defaultPadding * 2,
           ),
           Theme(
-            data: ThemeData(cardColor: Colors.white),
+            data: ThemeData(
+              cardColor: Colors.white,
+              useMaterial3: false,
+            ),
             child: WebDataTable(
               columnSpacing: 25,
               header: const Text('All Dealers'),
@@ -181,7 +184,7 @@ class _DealerScreenState extends State<DealerScreen> {
                                     widget.navigateMenu(31);
                                   },
                                   icon: const Icon(LineAwesomeIcons.eye)),
-                                  IconButton(
+                              IconButton(
                                   onPressed: () {
                                     showDialog(
                                       context: context,

@@ -14,18 +14,18 @@ import '../../widgets/gaps.dart';
 import '../../widgets/header.dart';
 import '../home_container/home_container.dart';
 
-class SerialKeyDetail extends StatefulWidget {
-  const SerialKeyDetail({
+class SerialKeyDetailSearch extends StatefulWidget {
+  const SerialKeyDetailSearch({
     Key? key,
     required this.navigateMenu,
   }) : super(key: key);
   final Function(int index) navigateMenu;
 
   @override
-  State<SerialKeyDetail> createState() => _SerialKeyDetailState();
+  State<SerialKeyDetailSearch> createState() => _SerialKeyDetailSearchState();
 }
 
-class _SerialKeyDetailState extends State<SerialKeyDetail> {
+class _SerialKeyDetailSearchState extends State<SerialKeyDetailSearch> {
   bool isBlocked = false;
   bool isPhotoChecked = false;
   bool isOtherInfoChecked = false;
@@ -46,7 +46,7 @@ class _SerialKeyDetailState extends State<SerialKeyDetail> {
   }
 
   reloadScreen() async {
-    _api.getWarrantyRequestById(HomeContainer.args).then((value) {
+    _api.getWarrantyRequestBySerialNumber(HomeContainer.args).then((value) {
       setState(() {
         warrantyModel = value;
         verifiedByCtrl.text = warrantyModel?.verifiedBy ?? '';

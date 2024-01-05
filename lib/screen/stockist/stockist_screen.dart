@@ -116,7 +116,10 @@ class _StockistScreenState extends State<StockistScreen> {
             defaultPadding * 2,
           ),
           Theme(
-            data: ThemeData(cardColor: Colors.white),
+            data: ThemeData(
+              cardColor: Colors.white,
+              useMaterial3: false,
+            ),
             child: WebDataTable(
               columnSpacing: 25,
               header: const Text('All Stockists'),

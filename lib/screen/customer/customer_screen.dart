@@ -115,7 +115,10 @@ class _CustomerScreenState extends State<CustomerScreen> {
             defaultPadding * 2,
           ),
           Theme(
-            data: ThemeData(cardColor: Colors.white),
+            data: ThemeData(
+              cardColor: Colors.white,
+              useMaterial3: false,
+            ),
             child: WebDataTable(
               columnSpacing: 25,
               header: const Text('All Customers'),

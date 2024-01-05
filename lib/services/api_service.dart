@@ -384,6 +384,43 @@ class ApiProvider extends ChangeNotifier {
     return warrantyModel;
   }
 
+  Future<WarrantyRequestModel?> getWarrantyRequestBySerialNumber(
+      String id) async {
+    status = ApiStatus.loading;
+    notifyListeners();
+    WarrantyRequestModel? warrantyModel;
+    try {
+      Response response = await _dio.get(
+        '${Api.requestWarranty}/serialNo/$id',
+        options: Options(
+          contentType: 'application/json',
+          responseType: ResponseType.json,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        warrantyModel = WarrantyRequestModel.fromMap(response.data['data']);
+        status = ApiStatus.success;
+        notifyListeners();
+        return warrantyModel;
+      }
+    } on DioException catch (e) {
+      status = ApiStatus.failed;
+      var resBody = e.response?.data ?? {};
+      log(e.response?.data.toString() ?? e.response.toString());
+      notifyListeners();
+      ToastService.instance.showError('Error : ${resBody['message']}');
+    } catch (e) {
+      status = ApiStatus.failed;
+      notifyListeners();
+      ToastService.instance.showError(e.toString());
+      log(e.toString());
+    }
+    status = ApiStatus.failed;
+    notifyListeners();
+    return warrantyModel;
+  }
+
   Future<bool> updateWarrantyRequest(
       Map<String, dynamic> map, String id) async {
     status = ApiStatus.loading;
@@ -591,18 +628,18 @@ class ApiProvider extends ChangeNotifier {
         }
 
         // parsing warrantyDetails
-        if (response.data['data']['data']['warrantyDetails'] != null) {
+        if (response.data['data']['data']['warrantyRequests'] != null) {
           var warrantyDetailsArr =
-              response.data['data']['data']['warrantyDetails']['statuses'];
+              response.data['data']['data']['warrantyRequests']['statuses'];
           for (var item in warrantyDetailsArr) {
             switch (item['status']) {
-              case 'PENDING':
+              case '0':
                 dashboardMetrics.warrantyRequestPending = item['count'];
                 break;
-              case 'APPROVED':
+              case '4':
                 dashboardMetrics.warrantyRequestApproved = item['count'];
                 break;
-              case 'DECLINED':
+              case '5':
                 dashboardMetrics.warrantyRequestDeclined = item['count'];
                 break;
             }

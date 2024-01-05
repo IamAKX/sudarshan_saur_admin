@@ -30,9 +30,9 @@ class MetricsCardGridView extends StatelessWidget {
     'Stockist Active',
     'Stockist Suspended',
     'Stockist Blocked',
-    'Warranty Approved',
-    'Warranty Pending',
-    'Warranty Declined',
+    // 'Warranty Approved',
+    // 'Warranty Pending',
+    // 'Warranty Declined',
   ];
 
   final List<IconData> metricIcons = [
@@ -48,9 +48,9 @@ class MetricsCardGridView extends StatelessWidget {
     LineAwesomeIcons.user_cog,
     LineAwesomeIcons.user_cog,
     LineAwesomeIcons.user_cog,
-    LineAwesomeIcons.identification_card,
-    LineAwesomeIcons.identification_card,
-    LineAwesomeIcons.identification_card,
+    // LineAwesomeIcons.identification_card,
+    // LineAwesomeIcons.identification_card,
+    // LineAwesomeIcons.identification_card,
   ];
 
   List<String> metricValue = [];
@@ -68,9 +68,9 @@ class MetricsCardGridView extends StatelessWidget {
     Colors.green,
     Colors.amber,
     Colors.red,
-    Colors.green,
-    Colors.orange,
-    Colors.red,
+    // Colors.green,
+    // Colors.orange,
+    // Colors.red,
   ];
 
   @override
@@ -160,9 +160,9 @@ class MetricsCardGridView extends StatelessWidget {
       '${metrics?.stockistActive ?? 0}',
       '${metrics?.stockistSuspended ?? 0}',
       '${metrics?.stockistBlocked ?? 0}',
-      '${metrics?.warrantyRequestApproved ?? 0}',
-      '${metrics?.warrantyRequestPending ?? 0}',
-      '${metrics?.warrantyRequestDeclined ?? 0}',
+      // '${metrics?.warrantyRequestApproved ?? 0}',
+      // '${metrics?.warrantyRequestPending ?? 0}',
+      // '${metrics?.warrantyRequestDeclined ?? 0}',
     ];
   }
 }

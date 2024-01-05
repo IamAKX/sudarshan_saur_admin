@@ -92,7 +92,7 @@ class SideMenu extends StatelessWidget {
                   },
                 ),
                 SideMenuItem(
-                  title: 'Warranty Request',
+                  title: 'Pending Request',
                   iconData: LineAwesomeIcons.poll_h,
                   press: () {
                     navigateMenu(5);
@@ -106,6 +106,16 @@ class SideMenu extends StatelessWidget {
                   iconData: LineAwesomeIcons.file_invoice,
                   press: () {
                     navigateMenu(6);
+                    if (Scaffold.of(context).isDrawerOpen) {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+                SideMenuItem(
+                  title: 'Search Serial ID',
+                  iconData: LineAwesomeIcons.poll_h,
+                  press: () {
+                    navigateMenu(7);
                     if (Scaffold.of(context).isDrawerOpen) {
                       Navigator.of(context).pop();
                     }

@@ -6,6 +6,8 @@ import 'package:saur_admin/screen/dealer/dealer_detail.dart';
 import 'package:saur_admin/screen/dealer/dealer_screen.dart';
 import 'package:saur_admin/screen/home_container/side_menu.dart';
 import 'package:saur_admin/screen/report/report_screen.dart';
+import 'package:saur_admin/screen/serial_number/search_serial_screen.dart';
+import 'package:saur_admin/screen/serial_number/serial_detail_search.dart';
 import 'package:saur_admin/screen/serial_number/serial_number_screen.dart';
 import 'package:saur_admin/screen/stockist/stockist_detail.dart';
 import 'package:saur_admin/screen/stockist/stockist_screen.dart';
@@ -17,6 +19,7 @@ class HomeContainer extends StatefulWidget {
   const HomeContainer({super.key});
   static const String routePath = '/homeContainer';
   static dynamic args;
+  static bool? isFromSearch;
   static GlobalKey<ScaffoldState> scafoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -60,6 +63,10 @@ class _HomeContainerState extends State<HomeContainer> {
         return SerialKeyDetail(navigateMenu: navigateMenu);
       case 6:
         return ReportScreen(navigateMenu: navigateMenu);
+      case 7:
+        return SearchSerialScreen(navigateMenu: navigateMenu);
+      case 71:
+        return SerialKeyDetailSearch(navigateMenu: navigateMenu);
       default:
         return DashboardScreen(navigateMenu: navigateMenu);
     }
