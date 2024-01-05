@@ -318,7 +318,7 @@ class ApiProvider extends ChangeNotifier {
     ListWarrantyModel? warrantyModel;
     try {
       Response response = await _dio.get(
-        Api.requestWarranty,
+        '${Api.requestWarranty}/status/PENDING',
         options: Options(
           contentType: 'application/json',
           responseType: ResponseType.json,
