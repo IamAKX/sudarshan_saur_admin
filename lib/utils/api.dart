@@ -16,12 +16,13 @@ class Api {
   static const String admin = '$baseUrl/saur/admin';
 
   static const String count = '$baseUrl/saur/customers/count';
-  
-  
-  static const String dealerAgreement = '$baseUrl/sudarshansaur/agreement/dealer/';
-  static const String stockistAgreement = '$baseUrl/sudarshansaur/agreement/stockist/';
 
+  static const String sdw = '$baseUrl/saur/sdw';
 
+  static const String dealerAgreement =
+      '$baseUrl/sudarshansaur/agreement/dealer/';
+  static const String stockistAgreement =
+      '$baseUrl/sudarshansaur/agreement/stockist/';
 
   static String buildOtpUrl(String phone, String otp) {
     return 'https://sms.voicesoft.in/vb/apikey.php?apikey=UaOLHBZP2GxUy3ZN&senderid=SSSPLM&number=$phone&unicode=2&message=Your%20OTP%20for%20phone%20verification%20on%20Sudarshan%20Saur%20Application%20is%20$otp';

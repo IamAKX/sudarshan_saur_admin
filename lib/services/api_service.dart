@@ -9,6 +9,7 @@ import 'package:saur_admin/model/dashboard_metrics.dart';
 import 'package:saur_admin/model/dealer_model.dart';
 import 'package:saur_admin/model/list/list_customer_model.dart';
 import 'package:saur_admin/model/list/list_dealer_model.dart';
+import 'package:saur_admin/model/list/list_sdw_model.dart';
 import 'package:saur_admin/model/list/list_warranty_model.dart';
 import 'package:saur_admin/model/stockist_model.dart';
 import 'package:saur_admin/model/warranty_model.dart';
@@ -313,6 +314,42 @@ class ApiProvider extends ChangeNotifier {
   }
 
   Future<ListWarrantyModel?> getAllWarrantyRequest() async {
+    status = ApiStatus.loading;
+    notifyListeners();
+    ListWarrantyModel? warrantyModel;
+    try {
+      Response response = await _dio.get(
+        '${Api.requestWarranty}',
+        options: Options(
+          contentType: 'application/json',
+          responseType: ResponseType.json,
+        ),
+      );
+      log(response.data.toString());
+      if (response.statusCode == 200) {
+        warrantyModel = ListWarrantyModel.fromMap(response.data);
+        status = ApiStatus.success;
+        notifyListeners();
+        return warrantyModel;
+      }
+    } on DioException catch (e) {
+      status = ApiStatus.failed;
+      var resBody = e.response?.data ?? {};
+      log(e.response?.data.toString() ?? e.response.toString());
+      notifyListeners();
+      ToastService.instance.showError('Error : ${resBody['message']}');
+    } catch (e) {
+      status = ApiStatus.failed;
+      notifyListeners();
+      ToastService.instance.showError(e.toString());
+      log(e.toString());
+    }
+    status = ApiStatus.failed;
+    notifyListeners();
+    return warrantyModel;
+  }
+
+  Future<ListWarrantyModel?> getAllPendingWarrantyRequest() async {
     status = ApiStatus.loading;
     notifyListeners();
     ListWarrantyModel? warrantyModel;
@@ -696,5 +733,41 @@ class ApiProvider extends ChangeNotifier {
     status = ApiStatus.failed;
     notifyListeners();
     return false;
+  }
+
+  Future<ListSdwModel?> getSdwList() async {
+    status = ApiStatus.loading;
+    notifyListeners();
+    ListSdwModel? sdwModel;
+    try {
+      Response response = await _dio.get(
+        Api.sdw,
+        options: Options(
+          contentType: 'application/json',
+          responseType: ResponseType.json,
+        ),
+      );
+      log(response.data.toString());
+      if (response.statusCode == 200) {
+        sdwModel = ListSdwModel.fromMap(response.data);
+        status = ApiStatus.success;
+        notifyListeners();
+        return sdwModel;
+      }
+    } on DioException catch (e) {
+      status = ApiStatus.failed;
+      var resBody = e.response?.data ?? {};
+      log(e.response?.data.toString() ?? e.response.toString());
+      notifyListeners();
+      ToastService.instance.showError('Error : ${resBody['message']}');
+    } catch (e) {
+      status = ApiStatus.failed;
+      notifyListeners();
+      ToastService.instance.showError(e.toString());
+      log(e.toString());
+    }
+    status = ApiStatus.failed;
+    notifyListeners();
+    return sdwModel;
   }
 }
