@@ -65,7 +65,7 @@ class _SerialNumberScreenState extends State<SerialNumberScreen> {
   }
 
   reloadScreen() async {
-    await _api.getAllPendingWarrantyRequest().then((value) {
+    await _api.getAllWarrantyRequestByStatus().then((value) {
       setState(() {
         list.clear();
         value?.data?.forEach((e) {

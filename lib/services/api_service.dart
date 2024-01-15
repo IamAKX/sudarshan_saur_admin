@@ -14,6 +14,7 @@ import 'package:saur_admin/model/list/list_warranty_model.dart';
 import 'package:saur_admin/model/stockist_model.dart';
 import 'package:saur_admin/model/warranty_model.dart';
 import 'package:saur_admin/model/warranty_request_model.dart';
+import 'package:saur_admin/screen/home_container/home_container.dart';
 import 'package:saur_admin/services/toast_service.dart';
 import 'package:saur_admin/utils/enum.dart';
 
@@ -349,19 +350,19 @@ class ApiProvider extends ChangeNotifier {
     return warrantyModel;
   }
 
-  Future<ListWarrantyModel?> getAllPendingWarrantyRequest() async {
+  Future<ListWarrantyModel?> getAllWarrantyRequestByStatus() async {
     status = ApiStatus.loading;
     notifyListeners();
     ListWarrantyModel? warrantyModel;
+    log('${Api.requestWarranty}/status/${HomeContainer.warrantyStatus}');
     try {
       Response response = await _dio.get(
-        '${Api.requestWarranty}/status/PENDING',
+        '${Api.requestWarranty}/status/${HomeContainer.warrantyStatus}',
         options: Options(
           contentType: 'application/json',
           responseType: ResponseType.json,
         ),
       );
-      log(response.data.toString());
       if (response.statusCode == 200) {
         warrantyModel = ListWarrantyModel.fromMap(response.data);
         status = ApiStatus.success;

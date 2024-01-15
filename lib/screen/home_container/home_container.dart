@@ -20,6 +20,7 @@ class HomeContainer extends StatefulWidget {
   static const String routePath = '/homeContainer';
   static dynamic args;
   static bool? isFromSearch;
+  static String warrantyStatus = 'PENDING';
   static GlobalKey<ScaffoldState> scafoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -58,6 +59,7 @@ class _HomeContainerState extends State<HomeContainer> {
       case 41:
         return StockistDetail(navigateMenu: navigateMenu);
       case 5:
+        // HomeContainer.warrantyStatus = 'PENDING';
         return SerialNumberScreen(navigateMenu: navigateMenu);
       case 51:
         return SerialKeyDetail(navigateMenu: navigateMenu);

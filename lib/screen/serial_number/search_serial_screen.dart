@@ -128,6 +128,23 @@ class _SearchSerialScreenState extends State<SearchSerialScreen> {
                   'Approved Requests',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(),
                 ),
+                verticalGap(defaultPadding / 2),
+                TextButton.icon(
+                  onPressed: () {
+                    HomeContainer.warrantyStatus = 'APPROVED';
+                    widget.navigateMenu(5);
+                  },
+                  label: Text(
+                    'View',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: primaryColor,
+                        ),
+                  ),
+                  icon: const Icon(
+                    Icons.arrow_right_alt,
+                    color: primaryColor,
+                  ),
+                )
               ],
             ),
           ),
@@ -153,6 +170,23 @@ class _SearchSerialScreenState extends State<SearchSerialScreen> {
                   'Declined Requests',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(),
                 ),
+                verticalGap(defaultPadding / 2),
+                TextButton.icon(
+                  onPressed: () {
+                    HomeContainer.warrantyStatus = 'DECLINED';
+                    widget.navigateMenu(5);
+                  },
+                  label: Text(
+                    'View',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: primaryColor,
+                        ),
+                  ),
+                  icon: const Icon(
+                    Icons.arrow_right_alt,
+                    color: primaryColor,
+                  ),
+                )
               ],
             ),
           ),
