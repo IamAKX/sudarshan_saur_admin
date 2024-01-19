@@ -75,7 +75,7 @@ class _SerialKeyDetailSearchState extends State<SerialKeyDetailSearch> {
           Header(
               title: 'Request Detail',
               navigateMenu: widget.navigateMenu,
-              navigateToIndex: HomeContainer.isFromSearch ?? false ? 6 : 5),
+              navigateToIndex: HomeContainer.isFromSearch ?? false ? 7 : 5),
           verticalGap(
             defaultPadding * 2,
           ),
