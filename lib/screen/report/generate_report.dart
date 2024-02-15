@@ -56,7 +56,7 @@ String getCDMReport(ListWarrantyModel? list) {
     row.add(req.invoiceNumber);
     row.add(req.invoiceDate ?? '');
     row.add(req.warrantyDetails?.invoiceNo);
-    row.add(DateTimeFormatter.onlyDateShort(req.installationDate ?? ''));
+    row.add(req.installationDate ?? '');
     row.add('1');
     row.add(req.installationDate ?? '');
     row.add(req.warrantyDetails?.warrantySerialNo);
