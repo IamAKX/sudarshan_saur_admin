@@ -21,6 +21,7 @@ String getCDMReport(ListWarrantyModel? list) {
     'Customer\'s Name',
     'Customer\'s Address',
     'Customer\'s Phone No. 1',
+    'District',
     'Dealer',
     'Place',
     'State or Union Territory',
@@ -48,13 +49,14 @@ String getCDMReport(ListWarrantyModel? list) {
     row.add(req.customers?.customerName);
     row.add(prepareAddress(req.installationAddress));
     row.add(req.customers?.mobileNo);
-    row.add(req.dealerInfo?.name);
-    row.add(req.installationAddress?.area);
+    row.add(req.installationAddress?.district);
+    row.add(req.warrantyDetails?.crmStockistName);
+    row.add(req.warrantyDetails?.crmStockistDistrict);
     row.add(req.installationAddress?.state);
     row.add(req.warrantyDetails?.lpd);
     row.add(req.warrantyDetails?.model);
     row.add(req.invoiceNumber);
-    row.add(req.invoiceDate ?? '');
+    row.add(req.installationDate ?? '');
     row.add(req.warrantyDetails?.invoiceNo);
     row.add(req.installationDate ?? '');
     row.add('1');

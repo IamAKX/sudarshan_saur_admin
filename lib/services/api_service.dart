@@ -17,6 +17,7 @@ import 'package:saur_admin/model/warranty_request_model.dart';
 import 'package:saur_admin/screen/home_container/home_container.dart';
 import 'package:saur_admin/services/toast_service.dart';
 import 'package:saur_admin/utils/enum.dart';
+import 'package:universal_html/html.dart' as html;
 
 import '../model/list/list_stockist_model.dart';
 import '../utils/api.dart';
@@ -770,5 +771,27 @@ class ApiProvider extends ChangeNotifier {
     status = ApiStatus.failed;
     notifyListeners();
     return sdwModel;
+  }
+
+  Future<void> downloadFile(String api, String filename) async {
+    status = ApiStatus.loading;
+    notifyListeners();
+    try {
+      var response = await _dio.get(
+        api,
+      );
+      status = ApiStatus.success;
+      notifyListeners();
+      final content = response.data;
+      final blob = html.Blob([content]);
+
+      final blobUrl = html.Url.createObjectUrlFromBlob(blob);
+      final anchor = html.AnchorElement(href: blobUrl)
+        ..setAttribute("download", filename)
+        ..click();
+      html.Url.revokeObjectUrl(blobUrl);
+    } catch (e) {
+      print("Error: $e");
+    }
   }
 }

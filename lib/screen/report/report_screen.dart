@@ -8,11 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:saur_admin/model/list/list_customer_model.dart';
 import 'package:saur_admin/model/list/list_sdw_model.dart';
 import 'package:saur_admin/model/list/list_stockist_model.dart';
-import 'package:saur_admin/screen/report/generate_report.dart';
-import 'package:saur_admin/utils/colors.dart';
-import 'package:saur_admin/utils/dummy/dummy_data.dart';
-import 'package:saur_admin/widgets/date_time_formatter.dart';
-
+import 'package:saur_admin/utils/api.dart';
 import '../../model/list/list_dealer_model.dart';
 import '../../model/list/list_warranty_model.dart';
 import '../../services/api_service.dart';
@@ -46,11 +42,11 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   reloadScreen() async {
-    warrantyRequestList = await _api.getAllWarrantyRequest();
-    customerList = await _api.getAllCustomer();
-    stockistList = await _api.getAllStockist();
-    dealerList = await _api.getAllDealers();
-    sdwList = await _api.getSdwList();
+    // warrantyRequestList = await _api.getAllWarrantyRequest();
+    // customerList = await _api.getAllCustomer();
+    // stockistList = await _api.getAllStockist();
+    // dealerList = await _api.getAllDealers();
+    // sdwList = await _api.getSdwList();
   }
 
   @override
@@ -79,178 +75,223 @@ class _ReportScreenState extends State<ReportScreen> {
                 )
               : Expanded(
                   child: Card(
-                      color: Colors.white,
-                      child: ListView(
-                        children: [
-                          ListTile(
-                            title: const Text(
-                              'CDM Report',
-                            ),
-                            trailing: IconButton(
-                              onPressed: () async {
-                                setState(() {
-                                  isPreparingReport = true;
-                                });
+                    color: Colors.white,
+                    child: ListView(
+                      children: [
+                        // ListTile(
+                        //   title: const Text(
+                        //     'CDM Report',
+                        //   ),
+                        //   trailing: IconButton(
+                        //     onPressed: () async {
+                        //       setState(() {
+                        //         isPreparingReport = true;
+                        //       });
 
-                                String csv = getCDMReport(warrantyRequestList);
-                                downloadCSV(csv,
-                                    'CDM_Report_${DateTimeFormatter.now()}');
-                                setState(() {
-                                  isPreparingReport = false;
-                                });
-                              },
-                              icon: const Icon(
-                                LineAwesomeIcons.file_download,
-                              ),
+                        //       String csv = getCDMReport(warrantyRequestList);
+                        //       downloadCSV(csv,
+                        //           'CDM_Report_${DateTimeFormatter.now()}');
+                        //       setState(() {
+                        //         isPreparingReport = false;
+                        //       });
+                        //     },
+                        //     icon: const Icon(
+                        //       LineAwesomeIcons.file_download,
+                        //     ),
+                        //   ),
+                        // ),
+                        // ListTile(
+                        //   title: const Text(
+                        //     'Customer',
+                        //   ),
+                        //   trailing: IconButton(
+                        //     onPressed: () async {
+                        //       setState(() {
+                        //         isPreparingReport = true;
+                        //       });
+
+                        //       String csv = getCustomerReport(
+                        //           warrantyRequestList, customerList);
+                        //       downloadCSV(
+                        //           csv, 'Customer_${DateTimeFormatter.now()}');
+                        //       setState(() {
+                        //         isPreparingReport = false;
+                        //       });
+                        //     },
+                        //     icon: const Icon(
+                        //       LineAwesomeIcons.file_download,
+                        //     ),
+                        //   ),
+                        // ),
+                        // ListTile(
+                        //   title: const Text(
+                        //     'Stockist',
+                        //   ),
+                        //   trailing: IconButton(
+                        //     onPressed: () async {
+                        //       setState(() {
+                        //         isPreparingReport = true;
+                        //       });
+
+                        //       String csv = getStockistReport(
+                        //           warrantyRequestList, stockistList, sdwList);
+                        //       downloadCSV(
+                        //           csv, 'Stockist_${DateTimeFormatter.now()}');
+                        //       setState(() {
+                        //         isPreparingReport = false;
+                        //       });
+                        //     },
+                        //     icon: const Icon(
+                        //       LineAwesomeIcons.file_download,
+                        //     ),
+                        //   ),
+                        // ),
+                        // ListTile(
+                        //   title: const Text(
+                        //     'Dealer',
+                        //   ),
+                        //   trailing: IconButton(
+                        //     onPressed: () async {
+                        //       setState(() {
+                        //         isPreparingReport = true;
+                        //       });
+
+                        //       String csv = getDealerReport(
+                        //           warrantyRequestList,
+                        //           dealerList,
+                        //           sdwList,
+                        //           stockistList);
+                        //       downloadCSV(
+                        //           csv, 'Dealer_${DateTimeFormatter.now()}');
+                        //       setState(() {
+                        //         isPreparingReport = false;
+                        //       });
+                        //     },
+                        //     icon: const Icon(
+                        //       LineAwesomeIcons.file_download,
+                        //     ),
+                        //   ),
+                        // ),
+                        // ListTile(
+                        //   title: const Text(
+                        //     'Plumber',
+                        //   ),
+                        //   trailing: IconButton(
+                        //     onPressed: () async {
+                        //       setState(() {
+                        //         isPreparingReport = true;
+                        //       });
+
+                        //       String csv = getPlumberReport(
+                        //         warrantyRequestList,
+                        //       );
+                        //       downloadCSV(
+                        //           csv, 'Plumber_${DateTimeFormatter.now()}');
+                        //       setState(() {
+                        //         isPreparingReport = false;
+                        //       });
+                        //     },
+                        //     icon: const Icon(
+                        //       LineAwesomeIcons.file_download,
+                        //     ),
+                        //   ),
+                        // ),
+                        // ListTile(
+                        //   title: const Text(
+                        //     'Technician',
+                        //   ),
+                        //   trailing: IconButton(
+                        //     onPressed: () async {
+                        //       setState(() {
+                        //         isPreparingReport = true;
+                        //       });
+
+                        //       String csv = getTechnicianReport(
+                        //         warrantyRequestList,
+                        //       );
+                        //       downloadCSV(csv,
+                        //           'Technician_${DateTimeFormatter.now()}');
+                        //       setState(() {
+                        //         isPreparingReport = false;
+                        //       });
+                        //     },
+                        //     icon: const Icon(
+                        //       LineAwesomeIcons.file_download,
+                        //     ),
+                        //   ),
+                        // ),
+                        // ListTile(
+                        //   title: const Text(
+                        //     'Guarantee',
+                        //   ),
+                        //   trailing: IconButton(
+                        //     onPressed: () async {
+                        //       setState(() {
+                        //         isPreparingReport = true;
+                        //       });
+
+                        //       String csv = getWarrantyReport(
+                        //         warrantyRequestList,
+                        //         sdwList,stockistList
+                        //       );
+                        //       downloadCSV(csv,
+                        //           'Guarantee_${DateTimeFormatter.now()}');
+                        //       setState(() {
+                        //         isPreparingReport = false;
+                        //       });
+                        //     },
+                        //     icon: const Icon(
+                        //       LineAwesomeIcons.file_download,
+                        //     ),
+                        //   ),
+                        // ),
+                        ListTile(
+                          title: const Text(
+                            'CDM Report',
+                          ),
+                          trailing: IconButton(
+                            onPressed: () async {
+                              _api.downloadFile('${Api.download}getCDMReport',
+                                  'CDM Report.csv');
+                            },
+                            icon: const Icon(
+                              LineAwesomeIcons.file_download,
                             ),
                           ),
-                          ListTile(
-                            title: const Text(
-                              'Customer',
-                            ),
-                            trailing: IconButton(
-                              onPressed: () async {
-                                setState(() {
-                                  isPreparingReport = true;
-                                });
-
-                                String csv = getCustomerReport(
-                                    warrantyRequestList, customerList);
-                                downloadCSV(
-                                    csv, 'Customer_${DateTimeFormatter.now()}');
-                                setState(() {
-                                  isPreparingReport = false;
-                                });
-                              },
-                              icon: const Icon(
-                                LineAwesomeIcons.file_download,
-                              ),
+                        ),
+                        ListTile(
+                          title: const Text(
+                            'Guarantee Card Report',
+                          ),
+                          trailing: IconButton(
+                            onPressed: () async {
+                              _api.downloadFile(
+                                  '${Api.download}getGuaranteeCardReport',
+                                  'Guarantee Card Report.csv');
+                            },
+                            icon: const Icon(
+                              LineAwesomeIcons.file_download,
                             ),
                           ),
-                          ListTile(
-                            title: const Text(
-                              'Stockist',
-                            ),
-                            trailing: IconButton(
-                              onPressed: () async {
-                                setState(() {
-                                  isPreparingReport = true;
-                                });
-
-                                String csv = getStockistReport(
-                                    warrantyRequestList, stockistList, sdwList);
-                                downloadCSV(
-                                    csv, 'Stockist_${DateTimeFormatter.now()}');
-                                setState(() {
-                                  isPreparingReport = false;
-                                });
-                              },
-                              icon: const Icon(
-                                LineAwesomeIcons.file_download,
-                              ),
+                        ),
+                        ListTile(
+                          title: const Text(
+                            'Warranty Count',
+                          ),
+                          trailing: IconButton(
+                            onPressed: () async {
+                              _api.downloadFile(
+                                  '${Api.download}getWarrantyCount',
+                                  'Warranty Count.csv');
+                            },
+                            icon: const Icon(
+                              LineAwesomeIcons.file_download,
                             ),
                           ),
-                          ListTile(
-                            title: const Text(
-                              'Dealer',
-                            ),
-                            trailing: IconButton(
-                              onPressed: () async {
-                                setState(() {
-                                  isPreparingReport = true;
-                                });
-
-                                String csv = getDealerReport(
-                                    warrantyRequestList,
-                                    dealerList,
-                                    sdwList,
-                                    stockistList);
-                                downloadCSV(
-                                    csv, 'Dealer_${DateTimeFormatter.now()}');
-                                setState(() {
-                                  isPreparingReport = false;
-                                });
-                              },
-                              icon: const Icon(
-                                LineAwesomeIcons.file_download,
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                            title: const Text(
-                              'Plumber',
-                            ),
-                            trailing: IconButton(
-                              onPressed: () async {
-                                setState(() {
-                                  isPreparingReport = true;
-                                });
-
-                                String csv = getPlumberReport(
-                                  warrantyRequestList,
-                                );
-                                downloadCSV(
-                                    csv, 'Plumber_${DateTimeFormatter.now()}');
-                                setState(() {
-                                  isPreparingReport = false;
-                                });
-                              },
-                              icon: const Icon(
-                                LineAwesomeIcons.file_download,
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                            title: const Text(
-                              'Technician',
-                            ),
-                            trailing: IconButton(
-                              onPressed: () async {
-                                setState(() {
-                                  isPreparingReport = true;
-                                });
-
-                                String csv = getTechnicianReport(
-                                  warrantyRequestList,
-                                );
-                                downloadCSV(csv,
-                                    'Technician_${DateTimeFormatter.now()}');
-                                setState(() {
-                                  isPreparingReport = false;
-                                });
-                              },
-                              icon: const Icon(
-                                LineAwesomeIcons.file_download,
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                            title: const Text(
-                              'Guarantee',
-                            ),
-                            trailing: IconButton(
-                              onPressed: () async {
-                                setState(() {
-                                  isPreparingReport = true;
-                                });
-
-                                String csv = getWarrantyReport(
-                                  warrantyRequestList,
-                                  sdwList,stockistList
-                                );
-                                downloadCSV(csv,
-                                    'Guarantee_${DateTimeFormatter.now()}');
-                                setState(() {
-                                  isPreparingReport = false;
-                                });
-                              },
-                              icon: const Icon(
-                                LineAwesomeIcons.file_download,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
+                        ),
+                      ],
+                    ),
+                  ),
                 )
         ],
       ),

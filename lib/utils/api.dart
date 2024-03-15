@@ -1,7 +1,7 @@
 class Api {
   // static const String baseUrl = 'http://icrmonline.in:8084';
   // static const String baseUrl = 'http://localhost:8084';
-  static const String baseUrl = 'https://13.51.238.100:8084';
+  static const String baseUrl = 'https://51.21.120.88:8084';
 
   static const String login = '$baseUrl/saur/customers/authenticate';
 
@@ -18,6 +18,7 @@ class Api {
   static const String count = '$baseUrl/saur/customers/count';
 
   static const String sdw = '$baseUrl/saur/sdw';
+  static const String download = '$baseUrl/saur/report/';
 
   static const String dealerAgreement =
       '$baseUrl/sudarshansaur/agreement/dealer/';
