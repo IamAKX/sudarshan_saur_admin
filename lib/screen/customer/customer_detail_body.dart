@@ -160,6 +160,19 @@ Card getCustomerDetailCard(BuildContext context, CustomerModel? customerModel) {
                 ),
           ),
           verticalGap(defaultPadding),
+          Text(
+            'Installer Mobile',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          Text(
+            customerModel?.installerMobile ?? '',
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  color: textColorDark,
+                  height: 1.8,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          verticalGap(defaultPadding),
           // Text(
           //   'Last Purchased on',
           //   style: Theme.of(context).textTheme.titleMedium,
