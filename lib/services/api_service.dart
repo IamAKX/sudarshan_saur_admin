@@ -12,6 +12,7 @@ import 'package:saur_admin/model/list/list_dealer_model.dart';
 import 'package:saur_admin/model/list/list_sdw_model.dart';
 import 'package:saur_admin/model/list/list_warranty_model.dart';
 import 'package:saur_admin/model/stockist_model.dart';
+import 'package:saur_admin/model/warranty_count.dart';
 import 'package:saur_admin/model/warranty_model.dart';
 import 'package:saur_admin/model/warranty_request_model.dart';
 import 'package:saur_admin/screen/home_container/home_container.dart';
@@ -793,5 +794,39 @@ class ApiProvider extends ChangeNotifier {
     } catch (e) {
       print("Error: $e");
     }
+  }
+
+  Future<WarrantyCount?> getWarrantyCount() async {
+    status = ApiStatus.loading;
+    notifyListeners();
+    WarrantyCount? model;
+    try {
+      Response response = await _dio.get(
+        Api.requestWarrantyStatus,
+        options: Options(
+          contentType: 'application/json',
+          responseType: ResponseType.json,
+        ),
+      );
+      log(response.data.toString());
+      if (response.statusCode == 200) {
+        model = WarrantyCount.fromMap(response.data['data']);
+        status = ApiStatus.success;
+        notifyListeners();
+        return model;
+      }
+    } on DioException catch (e) {
+      status = ApiStatus.failed;
+      var resBody = e.response?.data ?? {};
+      log(e.response?.data.toString() ?? e.response.toString());
+      notifyListeners();
+    } catch (e) {
+      status = ApiStatus.failed;
+      notifyListeners();
+      log(e.toString());
+    }
+    status = ApiStatus.failed;
+    notifyListeners();
+    return model;
   }
 }

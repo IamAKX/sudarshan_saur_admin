@@ -10,6 +10,7 @@ class Api {
   static const String dealers = '$baseUrl/saur/dealers';
 
   static const String requestWarranty = '$baseUrl/saur/warrantyRequests';
+  static const String requestWarrantyStatus = '$baseUrl/saur/warrantyRequests/warrantyStatus';
 
   static const String stockist = '$baseUrl/saur/stockists';
 
